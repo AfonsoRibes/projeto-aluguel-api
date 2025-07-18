@@ -8,6 +8,9 @@ export class User {
   _id: ObjectId;
 
   @Column()
+  name: string;
+
+  @Column()
   email: string;
 
   @Column()

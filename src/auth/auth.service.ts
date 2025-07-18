@@ -11,9 +11,9 @@ export class AuthService {
     private readonly userRepository: UserRepository,
   ) {}
 
-  async register(email: string, password: string) {
+  async register(name: string, email: string, password: string) {
     const hashed = await bcrypt.hash(password, 10);
-    return this.userRepository.create({ email, password: hashed });
+    return this.userRepository.create({ name, email, password: hashed });
   }
 
   async login(login: string, password: string) {

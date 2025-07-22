@@ -5,6 +5,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
 import { User } from './entities/user.entity';
+import { CampaignModule } from './campaign/campaign.module';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { User } from './entities/user.entity';
     }),
     TypeOrmModule.forFeature([User]),
     AuthModule,
+    CampaignModule,
   ],
   controllers: [AppController],
   providers: [AppService],

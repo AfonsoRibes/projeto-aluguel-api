@@ -1,4 +1,3 @@
-// src/entities/user.entity.ts
 import { ObjectId } from 'mongodb';
 import { Column, Entity, ObjectIdColumn } from 'typeorm';
 

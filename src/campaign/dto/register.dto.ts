@@ -1,18 +1,15 @@
 import { ApiProperty } from '@nestjs/swagger';
 
-export class RegisterDto {
+export class CreateCampaignDto {
   @ApiProperty({
-    example: 'nome',
-    description: 'Nome do usuário',
+    example: 'campanha 1',
+    description: 'Nome da campanha',
   })
   name: string;
 
   @ApiProperty({
-    example: 'usuario@exemplo.com',
-    description: 'Email do usuário',
+    example: 100,
+    description: 'Valor da campanha',
   })
-  email: string;
-
-  @ApiProperty({ example: 'senhaSegura123', description: 'Senha do usuário' })
-  password: string;
+  value: number;
 }

@@ -4,8 +4,9 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
-import { User } from './entities/user.entity';
 import { CampaignModule } from './campaign/campaign.module';
+import { Campaign } from './entities/campaign/campaign.entity';
+import { User } from './entities/user/user.entity';
 
 @Module({
   imports: [
@@ -14,10 +15,10 @@ import { CampaignModule } from './campaign/campaign.module';
       type: 'mongodb',
       url: process.env.MONGO_URI,
       database: 'nest-auth',
-      entities: [User],
+      entities: [User, Campaign],
       synchronize: true,
     }),
-    TypeOrmModule.forFeature([User]),
+    TypeOrmModule.forFeature([User, Campaign]),
     AuthModule,
     CampaignModule,
   ],

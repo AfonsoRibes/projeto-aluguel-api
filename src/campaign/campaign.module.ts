@@ -1,20 +1,14 @@
 import { Module } from '@nestjs/common';
-import { JwtModule } from '@nestjs/jwt';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { User } from '../entities/user.entity';
-import { UserRepository } from '../entities/user.repository';
+import { Campaign } from '../entities/campaign/campaign.entity';
 import { CampaignController } from './campaign.controller';
 import { CampaignService } from './campaign.service';
+import { CampaignRepository } from '../entities/campaign/campaign.repository';
 
 @Module({
-  imports: [
-    JwtModule.register({
-      secret: 'JWT_SECRET',
-      signOptions: { expiresIn: '1h' },
-    }),
-    TypeOrmModule.forFeature([User]),
-  ],
+  imports: [TypeOrmModule.forFeature([Campaign])],
   controllers: [CampaignController],
-  providers: [CampaignService, UserRepository],
+  providers: [CampaignService, CampaignRepository],
+  exports: [CampaignService],
 })
 export class CampaignModule {}

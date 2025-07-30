@@ -35,8 +35,6 @@ export class AuthController {
   @ApiResponse({ status: 200, description: 'Login realizado com sucesso.' })
   @ApiResponse({ status: 401, description: 'Credenciais inválidas.' })
   login(@Body() dto: LoginDto) {
-    console.log(dto);
-
     return this.authService.login(dto.login, dto.password);
   }
 

@@ -53,7 +53,6 @@ export class AuthService {
     const token = uuid();
     await this.userRepository.update(String(user._id), { resetToken: token });
 
-    // Aqui você enviaria o token por e-mail.
     return token;
   }
 

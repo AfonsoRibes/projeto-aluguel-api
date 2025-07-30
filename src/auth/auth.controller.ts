@@ -1,10 +1,19 @@
-import { Body, Controller, Post } from '@nestjs/common';
-import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
+import {
+  ApiBearerAuth,
+  ApiBody,
+  ApiOperation,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
+import { UserEntity } from '../entities/user/user.entity';
 import { AuthService } from './auth.service';
+import { User } from './decorator/user.decorator';
 import { ForgotPasswordDto } from './dto/forgot-password.dto';
 import { LoginDto } from './dto/login.dto';
 import { RegisterDto } from './dto/register.dto';
 import { ResetPasswordDto } from './dto/reset-password.dto';
+import { JwtAuthGuard } from './guards/jwt-auth.guard';
 
 @ApiTags('auth')
 @Controller('auth')
@@ -29,6 +38,20 @@ export class AuthController {
     console.log(dto);
 
     return this.authService.login(dto.login, dto.password);
+  }
+
+  @ApiBearerAuth()
+  @Get('details')
+  @UseGuards(JwtAuthGuard)
+  @ApiOperation({ summary: 'Retorna dados do usuário autenticado (me)' })
+  @ApiResponse({
+    status: 200,
+    description: 'Dados do usuário logado.',
+    type: UserEntity,
+  })
+  @ApiResponse({ status: 401, description: 'Não autorizado.' })
+  getProfile(@User() user: Omit<UserEntity, 'password'>) {
+    return user;
   }
 
   @Post('refresh')

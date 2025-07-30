@@ -1,36 +1,49 @@
-// src/entities/user.repository.ts
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { ObjectId } from 'mongodb';
 import { MongoRepository } from 'typeorm';
-import { User } from './user.entity';
+import { UserEntity } from './user.entity';
 
 @Injectable()
 export class UserRepository {
   constructor(
-    @InjectRepository(User)
-    private readonly userRepo: MongoRepository<User>,
+    @InjectRepository(UserEntity)
+    private readonly userRepo: MongoRepository<UserEntity>,
   ) {}
 
-  async create(data: Partial<User>): Promise<User> {
+  async create(data: Partial<UserEntity>): Promise<UserEntity> {
     const user = this.userRepo.create(data);
     return this.userRepo.save(user);
   }
 
-  async findByEmail(email: string): Promise<User | null> {
+  async findByEmail(email: string): Promise<UserEntity | null> {
     return this.userRepo.findOne({ where: { email } });
   }
 
-  async findByResetToken(token: string): Promise<User | null> {
+  async findByResetToken(token: string): Promise<UserEntity | null> {
     return this.userRepo.findOne({ where: { resetToken: token } });
   }
 
-  async findByRefreshToken(token: string): Promise<User | null> {
+  async findByRefreshToken(token: string): Promise<UserEntity | null> {
     return this.userRepo.findOne({ where: { refreshToken: token } });
   }
 
-  async update(id: string, data: Partial<User>): Promise<User | null> {
+  async update(
+    id: string,
+    data: Partial<UserEntity>,
+  ): Promise<UserEntity | null> {
     const objectId = new (require('mongodb').ObjectId)(id);
     await this.userRepo.updateOne({ _id: objectId }, { $set: data });
     return this.userRepo.findOne({ where: { _id: objectId } });
+  }
+
+  async findById(id: string): Promise<Omit<UserEntity, 'password'> | null> {
+    const objectId = new ObjectId(id);
+    const user = await this.userRepo.findOne({ where: { _id: objectId } });
+
+    if (!user) return null;
+
+    const { password, ...userWithoutPassword } = user;
+    return userWithoutPassword;
   }
 }

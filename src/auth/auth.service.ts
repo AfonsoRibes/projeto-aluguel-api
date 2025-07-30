@@ -30,6 +30,14 @@ export class AuthService {
     return { accessToken, refreshToken };
   }
 
+  async findById(id: string) {
+    const user = await this.userRepository.findById(id);
+    if (!user) {
+      throw new UnauthorizedException('Usuário não encontrado');
+    }
+    return user;
+  }
+
   async refreshToken(refreshToken: string) {
     const user = await this.userRepository.findByRefreshToken(refreshToken);
     if (!user) throw new UnauthorizedException('Refresh token inválido');

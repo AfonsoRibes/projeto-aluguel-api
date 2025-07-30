@@ -6,7 +6,7 @@ import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
 import { CampaignModule } from './campaign/campaign.module';
 import { Campaign } from './entities/campaign/campaign.entity';
-import { User } from './entities/user/user.entity';
+import { UserEntity } from './entities/user/user.entity';
 
 @Module({
   imports: [
@@ -15,10 +15,10 @@ import { User } from './entities/user/user.entity';
       type: 'mongodb',
       url: process.env.MONGO_URI,
       database: 'nest-auth',
-      entities: [User, Campaign],
+      entities: [UserEntity, Campaign],
       synchronize: true,
     }),
-    TypeOrmModule.forFeature([User, Campaign]),
+    TypeOrmModule.forFeature([UserEntity, Campaign]),
     AuthModule,
     CampaignModule,
   ],

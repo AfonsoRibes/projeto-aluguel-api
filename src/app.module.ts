@@ -7,6 +7,7 @@ import { AuthModule } from './auth/auth.module';
 import { CampaignModule } from './campaign/campaign.module';
 import { Campaign } from './entities/campaign/campaign.entity';
 import { UserEntity } from './entities/user/user.entity';
+import { UserModule } from './user/user.module';
 
 @Module({
   imports: [

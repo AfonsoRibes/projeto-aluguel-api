@@ -19,7 +19,7 @@ export class UserController {
   @ApiResponse({ status: 200, description: 'Usuário atualizado com sucesso.' })
   @ApiResponse({ status: 401, description: 'Não autorizado.' })
   update(@User() user: UserEntity, @Body() dto: UpdateUserDto) {
-    return this.userService.update(user._id, dto);
+    return this.userService.update(user._id.toHexString(), dto);
   }
 
   @Delete('delete')
@@ -29,6 +29,6 @@ export class UserController {
   @ApiResponse({ status: 200, description: 'Usuário deletado com sucesso.' })
   @ApiResponse({ status: 401, description: 'Não autorizado.' })
   delete(@User() user: UserEntity) {
-    return this.userService.delete(user._id);
+    return this.userService.delete(user._id.toHexString());
   }
 }

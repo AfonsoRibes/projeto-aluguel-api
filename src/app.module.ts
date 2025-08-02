@@ -21,6 +21,7 @@ import { UserEntity } from './entities/user/user.entity';
     TypeOrmModule.forFeature([UserEntity, Campaign]),
     AuthModule,
     CampaignModule,
+    UserModule,
   ],
   controllers: [AppController],
   providers: [AppService],

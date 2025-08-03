@@ -46,4 +46,9 @@ export class UserRepository {
     const { password, ...userWithoutPassword } = user;
     return userWithoutPassword;
   }
+
+  async delete(id: string): Promise<void> {
+    const objectId = new (require('mongodb').ObjectId)(id);
+    await this.userRepo.deleteOne({ _id: objectId });
+  }
 }

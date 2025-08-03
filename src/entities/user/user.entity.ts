@@ -20,4 +20,7 @@ export class UserEntity {
 
   @Column({ nullable: true })
   resetToken?: string;
+
+  @Column({ nullable: true })
+  phone?: string;
 }

@@ -1,12 +1,12 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Campaign } from '../../entities/campaign/campaign.entity';
-import { CampaignRepository } from '../../entities/campaign/campaign.repository';
+import { CampaignEntity } from '../../entities/campaign.entity';
+import { CampaignRepository } from '../../repositories/campaign.repository';
 import { CampaignController } from './campaign.controller';
 import { CampaignService } from './campaign.service';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Campaign])],
+  imports: [TypeOrmModule.forFeature([CampaignEntity])],
   controllers: [CampaignController],
   providers: [CampaignService, CampaignRepository],
   exports: [CampaignService],

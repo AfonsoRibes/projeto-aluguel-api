@@ -1,13 +1,16 @@
 import { ObjectId } from 'mongodb';
 import { Date } from 'mongoose';
 import { Column, Entity, JoinColumn, ManyToOne, ObjectIdColumn } from 'typeorm';
-import { PaymentDueDateEnum } from '../../shared/enums/payment-due-date.enum';
-import { RafflePlatformEnum } from '../../shared/enums/raffe-plataform.enum';
-import { RaffleSelectionTypeEnum } from '../../shared/enums/reffle-selection-type.enum';
-import { UserEntity } from '../user/user.entity';
+import { PaymentDueDateEnum } from '../shared/enums/payment-due-date.enum';
+import { RafflePlatformEnum } from '../shared/enums/raffe-plataform.enum';
+import { RaffleSelectionTypeEnum } from '../shared/enums/reffle-selection-type.enum';
+import { AwardedQuotaEntity } from './awarded-quota.entity';
+import { CampaignPrizeEntity } from './campaign-prize.entity';
+import { PromotionEntity } from './promotion.entity';
+import { UserEntity } from './user.entity';
 
 @Entity()
-export class Campaign {
+export class CampaignEntity {
   @ObjectIdColumn()
   _id: ObjectId;
 
@@ -75,9 +78,9 @@ export class Campaign {
   userId: ObjectId;
 
   // --- FK Awarded Quotas ---
-  @ManyToOne(() => AwardedQuotasEntity)
+  @ManyToOne(() => AwardedQuotaEntity)
   @JoinColumn({ name: 'awarded_quotas_id' })
-  awardedQuotas: AwardedQuotasEntity;
+  awardedQuotas: AwardedQuotaEntity;
 
   @Column()
   awardedQuotasId: ObjectId;

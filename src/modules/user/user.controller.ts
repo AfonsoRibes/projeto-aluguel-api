@@ -6,11 +6,11 @@ import {
   ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
-import { UpdateUserDto } from './dto/update-user.dto';
-import { UserService } from './user.service';
 import { User } from '../../auth/decorator/user.decorator';
 import { JwtAuthGuard } from '../../auth/guards/jwt-auth.guard';
-import { UserEntity } from '../../entities/user/user.entity';
+import { UserEntity } from '../../entities/user.entity';
+import { UpdateUserDto } from './dto/update-user.dto';
+import { UserService } from './user.service';
 
 @ApiTags('user')
 @Controller('user')

@@ -1,27 +1,20 @@
-import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
-import {
-  ApiBody,
-  ApiOperation,
-  ApiParam,
-  ApiResponse,
-  ApiTags,
-} from '@nestjs/swagger';
+import { Controller, Delete, Get, Param } from '@nestjs/common';
+import { ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { CampaignService } from './campaign.service';
-import { CreateCampaignDto } from './dto/register.dto';
 
 @ApiTags('campaign')
 @Controller('campaign')
 export class CampaignController {
   constructor(private readonly campaignService: CampaignService) {}
 
-  @Post()
-  @ApiOperation({ summary: 'Registra uma nova campanha' })
-  @ApiBody({ type: CreateCampaignDto })
-  @ApiResponse({ status: 201, description: 'Campanha registrado com sucesso.' })
-  @ApiResponse({ status: 400, description: 'Dados inválidos.' })
-  register(@Body() dto: CreateCampaignDto) {
-    return this.campaignService.create(dto);
-  }
+  // @Post()
+  // @ApiOperation({ summary: 'Registra uma nova campanha' })
+  // @ApiBody({ type: CreateCampaignDto })
+  // @ApiResponse({ status: 201, description: 'Campanha registrado com sucesso.' })
+  // @ApiResponse({ status: 400, description: 'Dados inválidos.' })
+  // register(@Body() dto: CreateCampaignDto) {
+  //   return this.campaignService.create(dto);
+  // }
 
   @Delete(':id')
   @ApiOperation({ summary: 'Deleta uma campanha' })

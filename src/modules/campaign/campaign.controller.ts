@@ -1,4 +1,4 @@
-import { Controller, Delete, Get, Param } from '@nestjs/common';
+import { Controller, Delete, Param } from '@nestjs/common';
 import { ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { CampaignService } from './campaign.service';
 
@@ -24,13 +24,13 @@ export class CampaignController {
     return this.campaignService.delete(id);
   }
 
-  @Get()
-  @ApiOperation({ summary: 'Lista todas as campanhas' })
-  @ApiResponse({
-    status: 200,
-    description: 'Lista de campanhas retornada com sucesso.',
-  })
-  getAll() {
-    return this.campaignService.findAll();
-  }
+  // @Get()
+  // @ApiOperation({ summary: 'Lista todas as campanhas' })
+  // @ApiResponse({
+  //   status: 200,
+  //   description: 'Lista de campanhas retornada com sucesso.',
+  // })
+  // getAll() {
+  //   return this.campaignService.findAll();
+  // }
 }

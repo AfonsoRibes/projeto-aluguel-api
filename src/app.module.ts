@@ -4,7 +4,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
-import { AwardedQuotasEntity } from './entities/awarded-quota.entity';
+import { AwardedQuotaEntity } from './entities/awarded-quota.entity';
 import { CampaignPrizeEntity } from './entities/campaign-prize.entity';
 import { CampaignEntity } from './entities/campaign.entity';
 import { PromotionEntity } from './entities/promotion.entity';
@@ -22,7 +22,7 @@ import { UserModule } from './modules/user/user.module';
       entities: [
         UserEntity,
         CampaignEntity,
-        AwardedQuotasEntity,
+        AwardedQuotaEntity,
         PromotionEntity,
         CampaignPrizeEntity,
       ],
@@ -31,7 +31,7 @@ import { UserModule } from './modules/user/user.module';
     TypeOrmModule.forFeature([
       UserEntity,
       CampaignEntity,
-      AwardedQuotasEntity,
+      AwardedQuotaEntity,
       PromotionEntity,
       CampaignPrizeEntity,
     ]),

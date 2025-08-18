@@ -9,9 +9,9 @@ export class CampaignService {
   //   return this.campaignRepository.create(dto);
   // }
 
-  async findAll() {
-    return this.campaignRepository.getAll();
-  }
+  // async findAll() {
+  //   return this.campaignRepository.getAll();
+  // }
 
   async delete(id: string) {
     return this.campaignRepository.delete(id);

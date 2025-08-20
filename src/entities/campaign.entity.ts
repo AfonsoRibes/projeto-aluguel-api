@@ -1,26 +1,17 @@
 import { ObjectId } from 'mongodb';
 import { Date } from 'mongoose';
-import {
-  Column,
-  Entity,
-  JoinColumn,
-  ManyToOne,
-  ObjectIdColumn,
-  OneToMany,
-} from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany } from 'typeorm';
 import { PaymentDueDateEnum } from '../shared/enums/payment-due-date.enum';
 import { RafflePlatformEnum } from '../shared/enums/raffe-plataform.enum';
 import { RaffleSelectionTypeEnum } from '../shared/enums/reffle-selection-type.enum';
+import { AbstractEntity } from './abstract.entity';
 import { AwardedQuotaEntity } from './awarded-quota.entity';
 import { CampaignPrizeEntity } from './campaign-prize.entity';
 import { PromotionEntity } from './promotion.entity';
 import { UserEntity } from './user.entity';
 
 @Entity()
-export class CampaignEntity {
-  @ObjectIdColumn()
-  _id: ObjectId;
-
+export class CampaignEntity extends AbstractEntity {
   @Column({ type: 'string' })
   title: string;
 
@@ -44,11 +35,6 @@ export class CampaignEntity {
     enum: RaffleSelectionTypeEnum,
   })
   RaffleSelectionType: RaffleSelectionTypeEnum;
-
-  @Column({
-    type: 'string',
-  })
-  x: string;
 
   @Column({ type: 'number', nullable: true })
   quotaLimitPerPerson?: number;

@@ -1,11 +1,8 @@
-import { ObjectId } from 'mongodb';
-import { Column, Entity, ObjectIdColumn } from 'typeorm';
+import { Column, Entity } from 'typeorm';
+import { AbstractEntity } from './abstract.entity';
 
 @Entity()
-export class UserEntity {
-  @ObjectIdColumn()
-  _id: ObjectId;
-
+export class UserEntity extends AbstractEntity {
   @Column()
   name: string;
 

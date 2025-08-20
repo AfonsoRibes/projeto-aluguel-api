@@ -1,12 +1,9 @@
-import { ObjectId } from 'mongodb';
-import { Column, Entity, ManyToOne, ObjectIdColumn } from 'typeorm';
+import { Column, Entity, ManyToOne } from 'typeorm';
+import { AbstractEntity } from './abstract.entity';
 import { CampaignEntity } from './campaign.entity';
 
 @Entity()
-export class CampaignPrizeEntity {
-  @ObjectIdColumn()
-  _id: ObjectId;
-
+export class CampaignPrizeEntity extends AbstractEntity {
   @Column({ type: 'string', name: 'name' })
   name: string;
 

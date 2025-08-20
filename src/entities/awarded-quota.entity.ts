@@ -1,5 +1,5 @@
 import { ObjectId } from 'mongodb';
-import { Column, Entity, ObjectIdColumn, OneToMany } from 'typeorm';
+import { Column, Entity, ManyToOne, ObjectIdColumn } from 'typeorm';
 import { CampaignEntity } from './campaign.entity';
 
 @Entity()
@@ -13,6 +13,6 @@ export class AwardedQuotaEntity {
   @Column({ type: 'string', name: 'prize' })
   prize: string;
 
-  @OneToMany(() => CampaignEntity, (campaign) => campaign.awardedQuotas)
-  campaigns: CampaignEntity[];
+  @ManyToOne(() => CampaignEntity, (campaign) => campaign.awardedQuotas)
+  campaigns: CampaignEntity;
 }

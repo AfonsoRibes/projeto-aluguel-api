@@ -1,6 +1,13 @@
 import { ObjectId } from 'mongodb';
 import { Date } from 'mongoose';
-import { Column, Entity, JoinColumn, ManyToOne, ObjectIdColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  ObjectIdColumn,
+  OneToMany,
+} from 'typeorm';
 import { PaymentDueDateEnum } from '../shared/enums/payment-due-date.enum';
 import { RafflePlatformEnum } from '../shared/enums/raffe-plataform.enum';
 import { RaffleSelectionTypeEnum } from '../shared/enums/reffle-selection-type.enum';
@@ -61,6 +68,9 @@ export class CampaignEntity {
   @Column({ type: 'boolean' })
   showTopThree: boolean;
 
+  @Column({ type: 'boolean' })
+  randomQuotas: boolean;
+
   @Column({ type: 'string', nullable: true })
   reservationEmail: string;
 
@@ -72,26 +82,18 @@ export class CampaignEntity {
   userId: ObjectId;
 
   // --- FK Awarded Quotas ---
-  @ManyToOne(() => AwardedQuotaEntity)
-  @JoinColumn({ name: 'awarded_quotas_id' })
-  awardedQuotas: AwardedQuotaEntity;
-
-  @Column()
-  awardedQuotasId: ObjectId;
+  @OneToMany(() => AwardedQuotaEntity, (awarded) => awarded.campaigns)
+  awardedQuotas: AwardedQuotaEntity[];
 
   // --- FK Campaign Prize ---
-  @ManyToOne(() => CampaignPrizeEntity)
-  @JoinColumn({ name: 'campaign_prize_id' })
-  campaignPrize: CampaignPrizeEntity;
-
-  @Column()
-  campaignPrizeId: ObjectId;
+  @OneToMany(
+    () => CampaignPrizeEntity,
+    (campaignPrize) => campaignPrize.campaigns,
+  )
+  campaignPrizes: CampaignPrizeEntity[];
 
   // --- FK Promotion ---
-  @ManyToOne(() => PromotionEntity)
-  @JoinColumn({ name: 'promotion_id' })
-  promotion: PromotionEntity;
 
-  @Column()
-  promotionId: ObjectId;
+  @OneToMany(() => PromotionEntity, (promotion) => promotion.campaigns)
+  promotions: PromotionEntity[];
 }

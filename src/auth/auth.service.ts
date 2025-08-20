@@ -14,7 +14,16 @@ export class AuthService {
   async register(name: string, email: string, password: string) {
     const hashed = await bcrypt.hash(password, 10);
 
-    return this.userRepository.create({ name, email, password: hashed });
+    const user = await this.userRepository.create({
+      name,
+      email,
+      password: hashed,
+    });
+
+    const accessToken = this.jwtService.sign({ sub: user._id });
+    const refreshToken = uuid();
+
+    return { accessToken, refreshToken };
   }
 
   async login(login: string, password: string) {
@@ -31,7 +40,7 @@ export class AuthService {
   }
 
   async findById(id: string) {
-    const user = await this.userRepository.findById(id);
+    const user = await this.userRepository.findUserById(id);
     if (!user) {
       throw new UnauthorizedException('Usuário não encontrado');
     }

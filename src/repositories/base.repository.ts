@@ -1,5 +1,10 @@
 import { ObjectId } from 'mongodb';
-import { FindOptionsWhere, MongoRepository, ObjectLiteral } from 'typeorm';
+import {
+  DeepPartial,
+  FindOptionsWhere,
+  MongoRepository,
+  ObjectLiteral,
+} from 'typeorm';
 
 export interface PaginationOptions<T> {
   page?: number;
@@ -14,7 +19,7 @@ export interface PaginationOptions<T> {
 export class BaseRepository<T extends ObjectLiteral> {
   constructor(protected readonly repository: MongoRepository<T>) {}
 
-  async create(data: Partial<T>): Promise<T> {
+  async create(data: DeepPartial<T>): Promise<T> {
     const entity = this.repository.create(data);
     return this.repository.save(entity);
   }
@@ -39,7 +44,7 @@ export class BaseRepository<T extends ObjectLiteral> {
     return this.repository.deleteOne({ _id: objectId } as any);
   }
 
-  async findWithPagination(options: PaginationOptions<T>) {
+  async findPaginated(options: PaginationOptions<T>) {
     const {
       page = 1,
       limit = 10,

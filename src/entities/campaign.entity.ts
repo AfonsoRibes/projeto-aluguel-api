@@ -38,12 +38,6 @@ export class CampaignEntity {
   })
   RaffleSelectionType: RaffleSelectionTypeEnum;
 
-  // @Column()
-  //anexos
-
-  // @Column()
-  // FK Promoções
-
   @Column({
     type: 'string',
   })

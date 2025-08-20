@@ -14,11 +14,6 @@ export class UserRepository extends BaseRepository<UserEntity> {
     super(userRepo);
   }
 
-  async create(data: Partial<UserEntity>): Promise<UserEntity> {
-    const user = this.userRepo.create(data);
-    return this.userRepo.save(user);
-  }
-
   async findByEmail(email: string): Promise<UserEntity | null> {
     return this.userRepo.findOne({ where: { email } });
   }
@@ -40,7 +35,7 @@ export class UserRepository extends BaseRepository<UserEntity> {
     return this.userRepo.findOne({ where: { _id: objectId } });
   }
 
-  async findById(id: string): Promise<Omit<UserEntity, 'password'> | null> {
+  async findUserById(id: string): Promise<Omit<UserEntity, 'password'> | null> {
     const objectId = new ObjectId(id);
     const user = await this.userRepo.findOne({ where: { _id: objectId } });
 
@@ -48,10 +43,5 @@ export class UserRepository extends BaseRepository<UserEntity> {
 
     const { password, ...userWithoutPassword } = user;
     return userWithoutPassword;
-  }
-
-  async delete(id: string): Promise<void> {
-    const objectId = new (require('mongodb').ObjectId)(id);
-    await this.userRepo.deleteOne({ _id: objectId });
   }
 }

@@ -1,5 +1,4 @@
 import { ObjectId } from 'mongodb';
-import { Date } from 'mongoose';
 import { Column, Entity, JoinColumn, ManyToOne, OneToMany } from 'typeorm';
 import { PaymentDueDateEnum } from '../shared/enums/payment-due-date.enum';
 import { RafflePlatformEnum } from '../shared/enums/raffe-plataform.enum';
@@ -10,7 +9,7 @@ import { CampaignPrizeEntity } from './campaign-prize.entity';
 import { PromotionEntity } from './promotion.entity';
 import { UserEntity } from './user.entity';
 
-@Entity()
+@Entity('campaign')
 export class CampaignEntity extends AbstractEntity {
   @Column({ type: 'string' })
   title: string;

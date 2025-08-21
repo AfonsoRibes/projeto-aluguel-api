@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Put, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Put, UseGuards } from '@nestjs/common';
 import {
   ApiBearerAuth,
   ApiBody,
@@ -17,7 +17,17 @@ import { UserService } from './user.service';
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
-  @Put('update')
+  @Get()
+  // @UseGuards(JwtAuthGuard)
+  // @ApiBearerAuth()
+  @ApiOperation({ summary: 'Get dados dos usuários' })
+  @ApiResponse({ status: 200, description: 'Usuários retornados com sucesso.' })
+  // @ApiResponse({ status: 401, description: 'Não autorizado.' })
+  get() {
+    return this.userService.getAll();
+  }
+
+  @Put()
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Atualizar dados do usuário' })
@@ -28,7 +38,7 @@ export class UserController {
     return this.userService.update(user._id.toHexString(), dto);
   }
 
-  @Delete('delete')
+  @Delete()
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Deletar conta do usuário' })

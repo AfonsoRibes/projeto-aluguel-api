@@ -1,5 +1,23 @@
-import { Body, Controller, Delete, Param, Post } from '@nestjs/common';
-import { ApiBody, ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  UseGuards,
+} from '@nestjs/common';
+import {
+  ApiBearerAuth,
+  ApiBody,
+  ApiOperation,
+  ApiParam,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
+import { User } from '../../auth/decorator/user.decorator';
+import { JwtAuthGuard } from '../../auth/guards/jwt-auth.guard';
+import { UserEntity } from '../../entities/user.entity';
 import { CampaignService } from './campaign.service';
 import { CreateCampaignDto } from './dto/create-campaign.dto';
 
@@ -7,6 +25,27 @@ import { CreateCampaignDto } from './dto/create-campaign.dto';
 @Controller('campaign')
 export class CampaignController {
   constructor(private readonly campaignService: CampaignService) {}
+
+  //TODO Pegar campanhas somente dos usuários
+  @Get()
+  // @UseGuards(JwtAuthGuard)
+  // @ApiBearerAuth()
+  @ApiOperation({ summary: 'Get campanha dos usuários' })
+  @ApiResponse({ status: 200, description: 'Usuários retornados com sucesso.' })
+  // @ApiResponse({ status: 401, description: 'Não autorizado.' })
+  get() {
+    return this.campaignService.getAll();
+  }
+
+  @Get('usercampaign')
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
+  @ApiOperation({ summary: 'Get campanha dos usuários' })
+  @ApiResponse({ status: 200, description: 'Usuários retornados com sucesso.' })
+  @ApiResponse({ status: 401, description: 'Não autorizado.' })
+  getUserCampaign(@User() user: UserEntity) {
+    return this.campaignService.getUserCampaigns(user._id);
+  }
 
   @Post()
   @ApiOperation({ summary: 'Registra uma nova campanha' })

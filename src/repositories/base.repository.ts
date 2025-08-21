@@ -33,6 +33,13 @@ export class BaseRepository<T extends ObjectLiteral> {
     return this.repository.findOne({ where: { _id: objectId } as any });
   }
 
+  async findByIds(ids: ObjectId[]): Promise<T[]> {
+    const objectIds = ids.map((id) => new ObjectId(id));
+    return this.repository.find({
+      where: { _id: { $in: objectIds } } as any,
+    });
+  }
+
   async update(id: string, data: Partial<T>): Promise<T | null> {
     const objectId = new ObjectId(id);
     await this.repository.updateOne({ _id: objectId } as any, { $set: data });

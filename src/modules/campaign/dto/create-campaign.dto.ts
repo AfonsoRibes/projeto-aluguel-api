@@ -7,10 +7,11 @@ import {
   IsOptional,
   IsString,
 } from 'class-validator';
-import { ObjectId } from 'mongoose';
+import { ObjectId, Schema } from 'mongoose';
 import { PaymentDueDateEnum } from '../../../shared/enums/payment-due-date.enum';
 import { RafflePlatformEnum } from '../../../shared/enums/raffe-plataform.enum';
 import { RaffleSelectionTypeEnum } from '../../../shared/enums/reffle-selection-type.enum';
+import { Types } from 'mongoose';
 
 export class CreateCampaignDto {
   @ApiProperty({ example: 'Campanha de Natal' })
@@ -52,7 +53,7 @@ export class CreateCampaignDto {
 
   @ApiPropertyOptional({ example: '2025-12-25T00:00:00Z' })
   @IsOptional()
-  releaseDate?: Date;
+  releaseDate?: Schema.Types.Date;
 
   @ApiProperty({
     enum: PaymentDueDateEnum,

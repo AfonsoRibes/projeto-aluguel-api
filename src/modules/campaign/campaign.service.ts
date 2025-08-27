@@ -13,9 +13,11 @@ export class CampaignService {
     return this.campaignRepository.findAll();
   }
 
-  async getUserCampaigns(userId: ObjectId) {
-    console.log(userId);
+  async getById(id: string) {
+    return this.campaignRepository.getById(id);
+  }
 
+  async getUserCampaigns(userId: ObjectId) {
     return this.campaignRepository.getUserCampaigns(userId);
   }
 

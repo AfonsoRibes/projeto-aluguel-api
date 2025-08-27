@@ -18,6 +18,15 @@ export class CampaignRepository extends BaseRepository<CampaignEntity> {
     super(campaignRepo);
   }
 
+  async getById(_id: string) {
+    const campaign = await this.campaignRepo.findOneOrFail({
+      where: { _id: new ObjectId(_id) },
+    });
+
+    console.log(campaign);
+    return campaign;
+  }
+
   async getUserCampaigns(userId: ObjectId) {
     const campaigns = await this.campaignRepo.find({
       where: { userId }, // aqui ok, se CampaignEntity tiver `userId`

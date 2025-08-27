@@ -26,26 +26,21 @@ import { CreateCampaignDto } from './dto/create-campaign.dto';
 export class CampaignController {
   constructor(private readonly campaignService: CampaignService) {}
 
-  //TODO Pegar campanhas somente dos usuários
-  @Get()
-  // @UseGuards(JwtAuthGuard)
-  // @ApiBearerAuth()
+  @Get(':id')
   @ApiOperation({ summary: 'Get campanha dos usuários' })
   @ApiResponse({ status: 200, description: 'Usuários retornados com sucesso.' })
-  // @ApiResponse({ status: 401, description: 'Não autorizado.' })
-  get() {
-    return this.campaignService.getAll();
+  @ApiParam({ name: 'id', description: 'ID da campanha', type: String })
+  getById(@Param('id') id: string) {
+    return this.campaignService.getById(id);
   }
 
-  @Get('usercampaign')
+  @Get()
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Get campanha dos usuários' })
   @ApiResponse({ status: 200, description: 'Usuários retornados com sucesso.' })
   @ApiResponse({ status: 401, description: 'Não autorizado.' })
   getUserCampaign(@User() user: UserEntity) {
-    console.log(user);
-
     return this.campaignService.getUserCampaigns(user._id);
   }
 

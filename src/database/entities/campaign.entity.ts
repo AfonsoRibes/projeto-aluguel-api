@@ -1,8 +1,8 @@
 import { ObjectId } from 'mongodb';
 import { Column, Entity, JoinColumn, ManyToOne, OneToMany } from 'typeorm';
-import { PaymentDueDateEnum } from '../shared/enums/payment-due-date.enum';
-import { RafflePlatformEnum } from '../shared/enums/raffe-plataform.enum';
-import { RaffleSelectionTypeEnum } from '../shared/enums/reffle-selection-type.enum';
+import { PaymentDueDateEnum } from '../../shared/enums/payment-due-date.enum';
+import { RafflePlatformEnum } from '../../shared/enums/raffe-plataform.enum';
+import { RaffleSelectionTypeEnum } from '../../shared/enums/reffle-selection-type.enum';
 import { AbstractEntity } from './abstract.entity';
 import { AwardedQuotaEntity } from './awarded-quota.entity';
 import { CampaignPrizeEntity } from './campaign-prize.entity';

@@ -1,7 +1,8 @@
 import { Injectable } from '@nestjs/common';
+import { ObjectId } from 'mongodb';
 import { DeepPartial } from 'typeorm';
-import { CampaignEntity } from '../../entities/campaign.entity';
-import { CampaignRepository } from '../../repositories/campaign.repository';
+import { CampaignEntity } from '../../database/entities/campaign.entity';
+import { CampaignRepository } from '../../database/repositories/campaign.repository';
 import { CreateCampaignDto } from './dto/create-campaign.dto';
 
 @Injectable()
@@ -12,15 +13,16 @@ export class CampaignService {
     return this.campaignRepository.findAll();
   }
 
-  // async getUserCampaigns(userId: ObjectId) {
-  //   console.log(userId);
+  async getUserCampaigns(userId: ObjectId) {
+    console.log(userId);
 
-  //   return this.campaignRepository.getUserCampaigns(userId);
-  // }
+    return this.campaignRepository.getUserCampaigns(userId);
+  }
 
-  async create(dto: CreateCampaignDto) {
+  async create(dto: CreateCampaignDto, userId: ObjectId) {
     return this.campaignRepository.create({
       ...dto,
+      userId,
     } as DeepPartial<CampaignEntity>);
   }
 

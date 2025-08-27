@@ -4,11 +4,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
-import { AwardedQuotaEntity } from './entities/awarded-quota.entity';
-import { CampaignPrizeEntity } from './entities/campaign-prize.entity';
-import { CampaignEntity } from './entities/campaign.entity';
-import { PromotionEntity } from './entities/promotion.entity';
-import { UserEntity } from './entities/user.entity';
+import { DatabaseModule } from './database/database.module';
 import { CampaignModule } from './modules/campaign/campaign.module';
 import { UserModule } from './modules/user/user.module';
 
@@ -19,22 +15,10 @@ import { UserModule } from './modules/user/user.module';
       type: 'mongodb',
       url: process.env.MONGO_URI,
       database: 'nest-auth',
-      entities: [
-        UserEntity,
-        CampaignEntity,
-        AwardedQuotaEntity,
-        PromotionEntity,
-        CampaignPrizeEntity,
-      ],
+      entities: [__dirname + '/**/*.entity{.ts,.js}'],
       synchronize: true,
     }),
-    TypeOrmModule.forFeature([
-      UserEntity,
-      CampaignEntity,
-      AwardedQuotaEntity,
-      PromotionEntity,
-      CampaignPrizeEntity,
-    ]),
+    DatabaseModule,
     AuthModule,
     CampaignModule,
     UserModule,

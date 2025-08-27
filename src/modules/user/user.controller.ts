@@ -8,7 +8,7 @@ import {
 } from '@nestjs/swagger';
 import { User } from '../../auth/decorator/user.decorator';
 import { JwtAuthGuard } from '../../auth/guards/jwt-auth.guard';
-import { UserEntity } from '../../entities/user.entity';
+import { UserEntity } from '../../database/entities/user.entity';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UserService } from './user.service';
 

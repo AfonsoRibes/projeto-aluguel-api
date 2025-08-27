@@ -6,7 +6,7 @@ import {
   ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
-import { UserEntity } from '../entities/user.entity';
+import { UserEntity } from '../database/entities/user.entity';
 import { AuthService } from './auth.service';
 import { User } from './decorator/user.decorator';
 import { ForgotPasswordDto } from './dto/forgot-password.dto';

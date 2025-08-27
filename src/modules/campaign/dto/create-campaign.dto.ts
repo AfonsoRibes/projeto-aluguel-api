@@ -7,11 +7,10 @@ import {
   IsOptional,
   IsString,
 } from 'class-validator';
-import { ObjectId, Schema } from 'mongoose';
+import {  Schema } from 'mongoose';
 import { PaymentDueDateEnum } from '../../../shared/enums/payment-due-date.enum';
 import { RafflePlatformEnum } from '../../../shared/enums/raffe-plataform.enum';
 import { RaffleSelectionTypeEnum } from '../../../shared/enums/reffle-selection-type.enum';
-import { Types } from 'mongoose';
 
 export class CreateCampaignDto {
   @ApiProperty({ example: 'Campanha de Natal' })
@@ -74,11 +73,4 @@ export class CreateCampaignDto {
   @IsOptional()
   @IsString()
   reservationEmail?: string;
-
-  @ApiProperty({
-    example: '64fa1234bcf86cd799439011',
-    description: 'Id do usuário dono da campanha',
-  })
-  @IsNotEmpty()
-  userId: ObjectId;
 }

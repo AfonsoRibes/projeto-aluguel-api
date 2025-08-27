@@ -18,7 +18,7 @@ export class CampaignRepository extends BaseRepository<CampaignEntity> {
     super(campaignRepo);
   }
 
-  async getById(_id: string) {
+  async getById(_id: ObjectId) {
     const campaign = await this.campaignRepo.findOneOrFail({
       where: { _id: new ObjectId(_id) },
     });
@@ -28,19 +28,8 @@ export class CampaignRepository extends BaseRepository<CampaignEntity> {
   }
 
   async getUserCampaigns(userId: ObjectId) {
-    const campaigns = await this.campaignRepo.find({
-      where: { userId }, // aqui ok, se CampaignEntity tiver `userId`
+    return this.campaignRepo.find({
+      where: { userId: userId },
     });
-
-    const userIds = campaigns.map((c) => c.userId);
-
-    const users = await this.userRepository.find({
-      where: { _id: { $in: userIds } } as any, // <-- ajustar para _id
-    });
-
-    return campaigns.map((c) => ({
-      ...c,
-      user: users.find((u) => u._id.equals(c.userId)) || null,
-    }));
   }
 }

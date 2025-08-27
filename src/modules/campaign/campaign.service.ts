@@ -13,7 +13,7 @@ export class CampaignService {
     return this.campaignRepository.findAll();
   }
 
-  async getById(id: string) {
+  async getById(id: ObjectId) {
     return this.campaignRepository.getById(id);
   }
 

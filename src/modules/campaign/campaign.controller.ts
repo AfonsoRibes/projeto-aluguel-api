@@ -20,6 +20,7 @@ import { JwtAuthGuard } from '../../auth/guards/jwt-auth.guard';
 import { UserEntity } from '../../database/entities/user.entity';
 import { CampaignService } from './campaign.service';
 import { CreateCampaignDto } from './dto/create-campaign.dto';
+import { ObjectId } from 'mongodb';
 
 @ApiTags('campaign')
 @Controller('campaign')
@@ -30,7 +31,7 @@ export class CampaignController {
   @ApiOperation({ summary: 'Get campanha dos usuários' })
   @ApiResponse({ status: 200, description: 'Usuários retornados com sucesso.' })
   @ApiParam({ name: 'id', description: 'ID da campanha', type: String })
-  getById(@Param('id') id: string) {
+  getById(@Param('id') id: ObjectId) {
     return this.campaignService.getById(id);
   }
 

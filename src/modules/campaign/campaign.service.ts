@@ -1,5 +1,4 @@
 import { Injectable } from '@nestjs/common';
-import { ObjectId } from 'mongodb';
 import { DeepPartial } from 'typeorm';
 import { CampaignEntity } from '../../entities/campaign.entity';
 import { CampaignRepository } from '../../repositories/campaign.repository';
@@ -13,11 +12,11 @@ export class CampaignService {
     return this.campaignRepository.findAll();
   }
 
-  async getUserCampaigns(userId: ObjectId) {
-    console.log(userId);
+  // async getUserCampaigns(userId: ObjectId) {
+  //   console.log(userId);
 
-    return this.campaignRepository.getUserCampaigns(userId);
-  }
+  //   return this.campaignRepository.getUserCampaigns(userId);
+  // }
 
   async create(dto: CreateCampaignDto) {
     return this.campaignRepository.create({

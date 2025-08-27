@@ -11,24 +11,24 @@ export class CampaignRepository extends BaseRepository<CampaignEntity> {
   constructor(
     @InjectRepository(CampaignEntity)
     private readonly campaignRepo: MongoRepository<CampaignEntity>,
-    private readonly userRepository: UserRepository,
+    // private readonly userRepository: UserRepository,
   ) {
     super(campaignRepo);
   }
 
-  async getUserCampaigns(userId: ObjectId) {
-    const campaigns = await this.campaignRepo.find({
-      where: { userId }, // busca pelo ObjectId
-    });
+  // async getUserCampaigns(userId: ObjectId) {
+  //   const campaigns = await this.campaignRepo.find({
+  //     where: { userId }, // busca pelo ObjectId
+  //   });
 
-    // buscar usuários manualmente
-    const userIds = campaigns.map((c) => c.userId);
-    const users = await this.userRepository.findByIds(userIds);
+  //   // buscar usuários manualmente
+  //   const userIds = campaigns.map((c) => c.userId);
+  //   const users = await this.userRepository.findByIds(userIds);
 
-    // combinar manualmente
-    return campaigns.map((c) => ({
-      ...c,
-      user: users.find((u) => u._id.equals(c.userId)) || null,
-    }));
-  }
+  //   // combinar manualmente
+  //   return campaigns.map((c) => ({
+  //     ...c,
+  //     user: users.find((u) => u._id.equals(c.userId)) || null,
+  //   }));
+  // }
 }

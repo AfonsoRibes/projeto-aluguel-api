@@ -1,7 +1,9 @@
 import { ObjectId } from 'mongodb';
 import {
   DeepPartial,
+  FindOptionsOrder,
   FindOptionsWhere,
+  Like,
   MongoRepository,
   ObjectLiteral,
 } from 'typeorm';
@@ -11,7 +13,7 @@ export interface PaginationOptions<T> {
   limit?: number;
   sortBy?: keyof T;
   order?: 'ASC' | 'DESC';
-  filters?: Partial<Record<keyof T, any>>;
+  filters?: FindOptionsWhere<T>;
   search?: string;
   searchFields?: (keyof T)[];
 }
@@ -28,9 +30,13 @@ export class BaseRepository<T extends ObjectLiteral> {
     return this.repository.find();
   }
 
-  async findById(id: string): Promise<T | null> {
-    const objectId = new ObjectId(id);
-    return this.repository.findOne({ where: { _id: objectId } as any });
+  // async findOneFail(id: ObjectId, message?: string): Promise<T> {
+  //   const objectId = new ObjectId(id);
+  //   return await this.findOneOrFail({ _id: objectId }, message);
+  // }
+
+  async findById(_id: ObjectId): Promise<T | null> {
+    return this.repository.findOne({ where: { _id } });
   }
 
   async findByIds(ids: ObjectId[]): Promise<T[]> {
@@ -40,15 +46,13 @@ export class BaseRepository<T extends ObjectLiteral> {
     });
   }
 
-  async update(id: string, data: Partial<T>): Promise<T | null> {
-    const objectId = new ObjectId(id);
-    await this.repository.updateOne({ _id: objectId } as any, { $set: data });
-    return this.findById(id);
+  async update(_id: ObjectId, data: Partial<T>): Promise<T | null> {
+    await this.repository.updateOne({ _id }, { $set: data });
+    return this.findById(_id);
   }
 
-  async delete(id: string) {
-    const objectId = new ObjectId(id);
-    return this.repository.deleteOne({ _id: objectId } as any);
+  async delete(_id: ObjectId) {
+    return this.repository.deleteOne({ _id });
   }
 
   async findPaginated(options: PaginationOptions<T>) {
@@ -57,49 +61,42 @@ export class BaseRepository<T extends ObjectLiteral> {
       limit = 10,
       sortBy,
       order = 'ASC',
-      filters = {},
+      filters = {} as FindOptionsWhere<T>,
       search,
       searchFields = [],
     } = options;
 
-    const where: FindOptionsWhere<T>[] = [];
-
-    // 🔍 Filtros exatos
-    if (Object.keys(filters).length > 0) {
-      where.push(filters as any);
-    }
-
-    // 🔍 Busca textual
-    if (search && searchFields.length > 0) {
-      const regex = new RegExp(search, 'i');
-      where.push({
-        $or: searchFields.map((field) => ({
-          [field as string]: { $regex: regex },
-        })),
-      } as any);
-    }
-
     const skip = (page - 1) * limit;
+
+    // 🔍 Condição base
+    let where: FindOptionsWhere<T> | FindOptionsWhere<T>[] = filters;
+
+    // 🔍 Busca textual (usando Like do TypeORM)
+    if (search && searchFields.length > 0) {
+      const searchConditions: FindOptionsWhere<T>[] = searchFields.map(
+        (field) =>
+          ({
+            [field]: Like(`%${search}%`),
+          }) as FindOptionsWhere<T>,
+      );
+
+      where = Array.isArray(where)
+        ? [...where, ...searchConditions]
+        : [where, ...searchConditions];
+    }
+
+    // 🔍 Ordenação
+    const orderOptions: FindOptionsOrder<T> =
+      sortBy != null ? ({ [sortBy]: order } as any) : {};
 
     const [data, total] = await Promise.all([
       this.repository.find({
-        where:
-          where.length > 0
-            ? where.length === 1
-              ? where[0]
-              : { $and: where }
-            : {},
+        where,
         skip,
         take: limit,
-        order: sortBy ? { [sortBy as string]: order } : undefined,
-      } as any),
-      this.repository.count(
-        where.length > 0
-          ? where.length === 1
-            ? where[0]
-            : { $and: where }
-          : {},
-      ),
+        order: orderOptions,
+      }),
+      this.repository.count({ where }),
     ]);
 
     return {

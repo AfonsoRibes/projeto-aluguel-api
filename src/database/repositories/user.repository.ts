@@ -27,12 +27,11 @@ export class UserRepository extends BaseRepository<UserEntity> {
   }
 
   async update(
-    id: string,
+    _id: ObjectId,
     data: Partial<UserEntity>,
   ): Promise<UserEntity | null> {
-    const objectId = new (require('mongodb').ObjectId)(id);
-    await this.userRepo.updateOne({ _id: objectId }, { $set: data });
-    return this.userRepo.findOne({ where: { _id: objectId } });
+    await this.userRepo.updateOne({ _id }, { $set: data });
+    return this.userRepo.findOne({ where: { _id } });
   }
 
   async findUserById(id: string): Promise<Omit<UserEntity, 'password'> | null> {

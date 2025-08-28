@@ -6,9 +6,9 @@ import {
   ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
-import { User } from '../../auth/decorator/user.decorator';
+import { ObjectId } from 'mongodb';
+import { UserId } from '../../auth/decorator/user.decorator';
 import { JwtAuthGuard } from '../../auth/guards/jwt-auth.guard';
-import { UserEntity } from '../../database/entities/user.entity';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UserService } from './user.service';
 
@@ -34,8 +34,8 @@ export class UserController {
   @ApiBody({ type: UpdateUserDto })
   @ApiResponse({ status: 200, description: 'Usuário atualizado com sucesso.' })
   @ApiResponse({ status: 401, description: 'Não autorizado.' })
-  update(@User() user: UserEntity, @Body() dto: UpdateUserDto) {
-    return this.userService.update(user._id.toHexString(), dto);
+  update(@UserId() userId: ObjectId, @Body() dto: UpdateUserDto) {
+    return this.userService.update(userId, dto);
   }
 
   @Delete()
@@ -44,7 +44,7 @@ export class UserController {
   @ApiOperation({ summary: 'Deletar conta do usuário' })
   @ApiResponse({ status: 200, description: 'Usuário deletado com sucesso.' })
   @ApiResponse({ status: 401, description: 'Não autorizado.' })
-  delete(@User() user: UserEntity) {
-    return this.userService.delete(user._id.toHexString());
+  delete(@UserId() userId: ObjectId) {
+    return this.userService.delete(userId);
   }
 }

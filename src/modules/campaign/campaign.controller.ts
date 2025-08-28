@@ -15,7 +15,7 @@ import {
   ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
-import { User } from '../../auth/decorator/user.decorator';
+import { User, UserId } from '../../auth/decorator/user.decorator';
 import { JwtAuthGuard } from '../../auth/guards/jwt-auth.guard';
 import { UserEntity } from '../../database/entities/user.entity';
 import { CampaignService } from './campaign.service';
@@ -57,11 +57,13 @@ export class CampaignController {
   }
 
   @Delete(':id')
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
   @ApiOperation({ summary: 'Deleta uma campanha' })
   @ApiParam({ name: 'id', description: 'ID da campanha', type: String })
   @ApiResponse({ status: 204, description: 'Campanha apagada com sucesso.' })
-  delete(@Param('id') id: string) {
-    return this.campaignService.delete(id);
+  delete(@UserId() userId, @Param('id') id: ObjectId) {
+    return this.campaignService.delete(userId, id);
   }
 
   // @Get()

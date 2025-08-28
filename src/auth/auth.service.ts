@@ -34,7 +34,7 @@ export class AuthService {
 
     const accessToken = this.jwtService.sign({ sub: user._id });
     const refreshToken = uuid();
-    await this.userRepository.update(String(user._id), { refreshToken });
+    await this.userRepository.update(user._id, { refreshToken });
 
     return { accessToken, refreshToken };
   }
@@ -60,7 +60,7 @@ export class AuthService {
     if (!user) return;
 
     const token = uuid();
-    await this.userRepository.update(String(user._id), { resetToken: token });
+    await this.userRepository.update(user._id, { resetToken: token });
 
     return token;
   }
@@ -70,7 +70,7 @@ export class AuthService {
     if (!user) throw new UnauthorizedException('Token inválido');
 
     const hashed = await bcrypt.hash(newPassword, 10);
-    await this.userRepository.update(String(user._id), {
+    await this.userRepository.update(user._id, {
       password: hashed,
       resetToken: undefined,
     });

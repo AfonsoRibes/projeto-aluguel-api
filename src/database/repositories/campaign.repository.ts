@@ -25,4 +25,10 @@ export class CampaignRepository extends BaseRepository<CampaignEntity> {
       where: { userId: userId },
     });
   }
+
+  async findByUserOrFail(_id: ObjectId, userId: ObjectId) {
+    return await this.campaignRepo.findOneOrFail({
+      where: { _id, userId },
+    });
+  }
 }

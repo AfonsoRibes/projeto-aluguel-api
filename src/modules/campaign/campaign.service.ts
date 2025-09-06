@@ -33,7 +33,12 @@ export class CampaignService {
   // }
 
   async delete(userId: ObjectId, _id: ObjectId) {
-    const campaign = await this.campaignRepository.findById(_id);
+    await this.campaignRepository.findOneOrFail(
+      {
+        where: { _id },
+      },
+      'Campanha não encontrada',
+    );
     return this.campaignRepository.delete(_id);
   }
 }

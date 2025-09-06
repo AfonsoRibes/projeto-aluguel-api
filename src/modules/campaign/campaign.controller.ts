@@ -62,8 +62,8 @@ export class CampaignController {
   @ApiOperation({ summary: 'Deleta uma campanha' })
   @ApiParam({ name: 'id', description: 'ID da campanha', type: String })
   @ApiResponse({ status: 204, description: 'Campanha apagada com sucesso.' })
-  delete(@UserId() userId: ObjectId, @Param('id') id: ObjectId) {
-    return this.campaignService.delete(userId, id);
+  delete(@UserId() userId: ObjectId, @Param('id') id: string) {
+    return this.campaignService.delete(userId, new ObjectId(id));
   }
 
   // @Get()

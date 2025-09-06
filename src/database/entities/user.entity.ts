@@ -1,11 +1,9 @@
-import { ObjectId } from 'mongodb';
-import { Column, Entity, Index, ObjectIdColumn } from 'typeorm';
+import { Exclude } from 'class-transformer';
+import { Column, Entity, Index } from 'typeorm';
+import { AbstractEntity } from './abstract.entity';
 
 @Entity()
-export class UserEntity {
-  @ObjectIdColumn()
-  _id: ObjectId;
-
+export class UserEntity extends AbstractEntity {
   @Column()
   name: string;
 
@@ -13,6 +11,7 @@ export class UserEntity {
   @Column()
   email: string;
 
+  @Exclude()
   @Column()
   password: string;
 

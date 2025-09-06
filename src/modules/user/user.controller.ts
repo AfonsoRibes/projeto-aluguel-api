@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Put, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Put, UseGuards } from '@nestjs/common';
 import {
   ApiBearerAuth,
   ApiBody,
@@ -6,9 +6,9 @@ import {
   ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
-import { User } from '../auth/decorator/user.decorator';
-import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
-import { UserEntity } from '../entities/user/user.entity';
+import { ObjectId } from 'mongodb';
+import { UserId } from '../../auth/decorator/user.decorator';
+import { JwtAuthGuard } from '../../auth/guards/jwt-auth.guard';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UserService } from './user.service';
 
@@ -17,24 +17,34 @@ import { UserService } from './user.service';
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
-  @Put('update')
+  @Get()
+  // @UseGuards(JwtAuthGuard)
+  // @ApiBearerAuth()
+  @ApiOperation({ summary: 'Get dados dos usuários' })
+  @ApiResponse({ status: 200, description: 'Usuários retornados com sucesso.' })
+  // @ApiResponse({ status: 401, description: 'Não autorizado.' })
+  get() {
+    return this.userService.getAll();
+  }
+
+  @Put()
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Atualizar dados do usuário' })
   @ApiBody({ type: UpdateUserDto })
   @ApiResponse({ status: 200, description: 'Usuário atualizado com sucesso.' })
   @ApiResponse({ status: 401, description: 'Não autorizado.' })
-  update(@User() user: UserEntity, @Body() dto: UpdateUserDto) {
-    return this.userService.update(user._id.toHexString(), dto);
+  update(@UserId() userId: ObjectId, @Body() dto: UpdateUserDto) {
+    return this.userService.update(userId, dto);
   }
 
-  @Delete('delete')
+  @Delete()
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Deletar conta do usuário' })
   @ApiResponse({ status: 200, description: 'Usuário deletado com sucesso.' })
   @ApiResponse({ status: 401, description: 'Não autorizado.' })
-  delete(@User() user: UserEntity) {
-    return this.userService.delete(user._id.toHexString());
+  delete(@UserId() userId: ObjectId) {
+    return this.userService.delete(userId);
   }
 }

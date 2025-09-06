@@ -2,7 +2,7 @@ import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 import { v4 as uuid } from 'uuid';
-import { UserRepository } from '../entities/user/user.repository';
+import { UserRepository } from '../database/repositories/user.repository';
 
 @Injectable()
 export class AuthService {
@@ -14,7 +14,16 @@ export class AuthService {
   async register(name: string, email: string, password: string) {
     const hashed = await bcrypt.hash(password, 10);
 
-    return this.userRepository.create({ name, email, password: hashed });
+    const user = await this.userRepository.create({
+      name,
+      email,
+      password: hashed,
+    });
+
+    const accessToken = this.jwtService.sign({ sub: user._id });
+    const refreshToken = uuid();
+
+    return { accessToken, refreshToken };
   }
 
   async login(login: string, password: string) {
@@ -25,13 +34,13 @@ export class AuthService {
 
     const accessToken = this.jwtService.sign({ sub: user._id });
     const refreshToken = uuid();
-    await this.userRepository.update(String(user._id), { refreshToken });
+    await this.userRepository.update(user._id, { refreshToken });
 
     return { accessToken, refreshToken };
   }
 
   async findById(id: string) {
-    const user = await this.userRepository.findById(id);
+    const user = await this.userRepository.findUserById(id);
     if (!user) {
       throw new UnauthorizedException('Usuário não encontrado');
     }
@@ -51,7 +60,7 @@ export class AuthService {
     if (!user) return;
 
     const token = uuid();
-    await this.userRepository.update(String(user._id), { resetToken: token });
+    await this.userRepository.update(user._id, { resetToken: token });
 
     return token;
   }
@@ -61,7 +70,7 @@ export class AuthService {
     if (!user) throw new UnauthorizedException('Token inválido');
 
     const hashed = await bcrypt.hash(newPassword, 10);
-    await this.userRepository.update(String(user._id), {
+    await this.userRepository.update(user._id, {
       password: hashed,
       resetToken: undefined,
     });

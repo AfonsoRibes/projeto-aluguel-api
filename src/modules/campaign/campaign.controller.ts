@@ -15,12 +15,12 @@ import {
   ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
+import { ObjectId } from 'mongodb';
 import { User, UserId } from '../../auth/decorator/user.decorator';
 import { JwtAuthGuard } from '../../auth/guards/jwt-auth.guard';
 import { UserEntity } from '../../database/entities/user.entity';
 import { CampaignService } from './campaign.service';
 import { CreateCampaignDto } from './dto/create-campaign.dto';
-import { ObjectId } from 'mongodb';
 
 @ApiTags('campaign')
 @Controller('campaign')
@@ -62,7 +62,7 @@ export class CampaignController {
   @ApiOperation({ summary: 'Deleta uma campanha' })
   @ApiParam({ name: 'id', description: 'ID da campanha', type: String })
   @ApiResponse({ status: 204, description: 'Campanha apagada com sucesso.' })
-  delete(@UserId() userId, @Param('id') id: ObjectId) {
+  delete(@UserId() userId: ObjectId, @Param('id') id: ObjectId) {
     return this.campaignService.delete(userId, id);
   }
 

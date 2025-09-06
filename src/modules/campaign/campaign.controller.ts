@@ -4,6 +4,7 @@ import {
   Delete,
   Get,
   Param,
+  Patch,
   Post,
   UseGuards,
 } from '@nestjs/common';
@@ -26,6 +27,14 @@ import { CreateCampaignDto } from './dto/create-campaign.dto';
 @Controller('campaign')
 export class CampaignController {
   constructor(private readonly campaignService: CampaignService) {}
+
+  @Patch('pay/:id')
+  @ApiOperation({ summary: 'Pagar uma campanha' })
+  @ApiResponse({ status: 200, description: 'Campanha paga com sucesso.' })
+  @ApiParam({ name: 'id', description: 'ID da campanha', type: String })
+  payCampaign(@Param('id') id: ObjectId) {
+    return this.campaignService.payCampaign(id);
+  }
 
   @Get(':id')
   @ApiOperation({ summary: 'Get campanha dos usuários' })
@@ -65,14 +74,4 @@ export class CampaignController {
   delete(@UserId() userId: ObjectId, @Param('id') id: string) {
     return this.campaignService.delete(userId, new ObjectId(id));
   }
-
-  // @Get()
-  // @ApiOperation({ summary: 'Lista todas as campanhas' })
-  // @ApiResponse({
-  //   status: 200,
-  //   description: 'Lista de campanhas retornada com sucesso.',
-  // })
-  // getAll() {
-  //   return this.campaignService.findAll();
-  // }
 }

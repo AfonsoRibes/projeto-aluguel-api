@@ -47,8 +47,8 @@ export class CampaignEntity extends AbstractEntity {
   })
   PaymentDueDate: PaymentDueDateEnum;
 
-  // @Column({})
-  // publishTax
+  @Column({ type: 'boolean', default: 'false' })
+  paid: boolean;
 
   @Column({ type: 'boolean' })
   showTopThree: boolean;

@@ -9,6 +9,16 @@ import { CreateCampaignDto } from './dto/create-campaign.dto';
 export class CampaignService {
   constructor(private readonly campaignRepository: CampaignRepository) {}
 
+  async payCampaign(_id: ObjectId) {
+    await this.campaignRepository.findOneOrFail(
+      {
+        where: { _id },
+      },
+      'Campanha não encontrada',
+    );
+    return await this.campaignRepository.update(_id, { paid: true });
+  }
+
   async getAll() {
     return this.campaignRepository.findAll();
   }
@@ -35,7 +45,7 @@ export class CampaignService {
   async delete(userId: ObjectId, _id: ObjectId) {
     await this.campaignRepository.findOneOrFail(
       {
-        where: { _id },
+        where: { _id, userId },
       },
       'Campanha não encontrada',
     );

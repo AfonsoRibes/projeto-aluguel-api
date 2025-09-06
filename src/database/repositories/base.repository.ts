@@ -1,6 +1,8 @@
+import { NotFoundException } from '@nestjs/common';
 import { ObjectId } from 'mongodb';
 import {
   DeepPartial,
+  FindOneOptions,
   FindOptionsOrder,
   FindOptionsWhere,
   Like,
@@ -30,10 +32,16 @@ export class BaseRepository<T extends ObjectLiteral> {
     return this.repository.find();
   }
 
-  // async findOneFail(id: ObjectId, message?: string): Promise<T> {
-  //   const objectId = new ObjectId(id);
-  //   return await this.findOneOrFail({ _id: objectId }, message);
-  // }
+  async findOneOrFail(
+    options: FindOneOptions<T>,
+    message = 'Entity not found',
+  ): Promise<T> {
+    const entity = await this.repository.findOne(options);
+    if (!entity) {
+      throw new NotFoundException(message);
+    }
+    return entity;
+  }
 
   async findById(_id: ObjectId): Promise<T | null> {
     return this.repository.findOne({ where: { _id } });

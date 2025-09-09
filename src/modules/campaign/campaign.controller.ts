@@ -32,8 +32,9 @@ export class CampaignController {
   @ApiOperation({ summary: 'Pagar uma campanha' })
   @ApiResponse({ status: 200, description: 'Campanha paga com sucesso.' })
   @ApiParam({ name: 'id', description: 'ID da campanha', type: String })
-  payCampaign(@Param('id') id: ObjectId) {
-    return this.campaignService.payCampaign(id);
+  payCampaign(@Param('id') id: string) {
+    console.log('Received ID:', id);
+    return this.campaignService.payCampaign(new ObjectId(id));
   }
 
   @Get(':id')

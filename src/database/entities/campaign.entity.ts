@@ -35,8 +35,14 @@ export class CampaignEntity extends AbstractEntity {
   })
   RaffleSelectionType: RaffleSelectionTypeEnum;
 
+  @Column({ type: 'string', nullable: true })
+  contactPhone?: string;
+
+    @Column({ type: 'number', nullable: true })
+  minQuota?: number;
+
   @Column({ type: 'number', nullable: true })
-  quotaLimitPerPerson?: number;
+  maxQuota?: number;
 
   @Column({ type: 'date', nullable: true })
   releaseDate?: Date;
@@ -77,8 +83,12 @@ export class CampaignEntity extends AbstractEntity {
   )
   campaignPrizes: CampaignPrizeEntity[];
 
-  // --- FK Promotion ---
+    @Column({ type: 'boolean', default: false })
+  isPromotionActive: boolean;
 
-  @OneToMany(() => PromotionEntity, (promotion) => promotion.campaigns)
-  promotions: PromotionEntity[];
+  @Column({ type: 'string', nullable: true })
+  promotionText?: string;
+
+  @Column({ type: 'number', nullable: true })
+  discountPercentage?: number;
 }

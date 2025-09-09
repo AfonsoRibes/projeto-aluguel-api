@@ -38,21 +38,46 @@ export class CreateCampaignDto {
   @IsEnum(RafflePlatformEnum)
   rafflePlataform: RafflePlatformEnum;
 
-  @ApiProperty({
+    @ApiProperty({
     enum: RaffleSelectionTypeEnum,
     example: RaffleSelectionTypeEnum.RANDOM,
   })
   @IsEnum(RaffleSelectionTypeEnum)
   RaffleSelectionType: RaffleSelectionTypeEnum;
 
-  @ApiPropertyOptional({ example: 5 })
+  @ApiPropertyOptional({ example: '5511987654321' })
+  @IsOptional()
+  @IsString()
+  contactPhone?: string;
+
+    @ApiPropertyOptional({ example: 5 })
   @IsOptional()
   @IsNumber()
-  quotaLimitPerPerson?: number;
+  minQuota?: number;
+
+  @ApiPropertyOptional({ example: 15 })
+  @IsOptional()
+  @IsNumber()
+  maxQuota?: number;
 
   @ApiPropertyOptional({ example: '2025-12-25T00:00:00Z' })
   @IsOptional()
   releaseDate?: Schema.Types.Date;
+
+  @ApiPropertyOptional({ example: true })
+  @IsOptional()
+  @IsBoolean()
+  isPromotionActive?: boolean;
+
+  @ApiPropertyOptional({ example: 'Desconto de Verão' })
+  @IsOptional()
+  @IsString()
+  promotionText?: string;
+
+  @ApiPropertyOptional({ example: 10 })
+  @IsOptional()
+  @IsNumber()
+  discountPercentage?: number;
 
   @ApiProperty({
     enum: PaymentDueDateEnum,

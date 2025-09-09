@@ -10,6 +10,5 @@ export class PromotionEntity extends AbstractEntity {
   @Column({ type: 'number', name: 'price' })
   price: number;
 
-  @ManyToOne(() => CampaignEntity, (campaign) => campaign.promotions)
-  campaigns: CampaignEntity;
+  
 }

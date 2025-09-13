@@ -41,7 +41,51 @@ export class CampaignService {
   }
 
   async getUserCampaigns(userId: ObjectId) {
-    return this.campaignRepository.getUserCampaigns(userId);
+    const campaigns = await this.campaignRepository.getUserCampaigns(userId);
+
+    const enrichedCampaigns = await Promise.all(
+      campaigns.map(async (campaign) => {
+        const awardedQuotas = await this.awardedQuotaRepository.find({
+          campaignId: campaign._id, // Use campaignId directly as confirmed earlier
+        });
+
+        const soldTickets = awardedQuotas.reduce(
+          (totalSold, awardedQuota) => {
+            // Assuming awardedQuota.quota is a string like "(quota: 1, 2, 3)"
+            const matches = awardedQuota.quota.match(/\d+/g); // Extract all numbers from the string
+            if (matches) {
+              // Count the number of individual quotas
+              return totalSold + matches.length;
+            }
+            return totalSold;
+          },
+          0,
+        );
+
+        const collectedAmount = awardedQuotas.reduce(
+          (sum, awardedQuota) => {
+            // Assuming each awarded quota contributes its campaign's ticketValue
+            // If a single awardedQuota can represent multiple actual quotas,
+            // and each quota has a value of campaign.ticketValue, then we need to multiply.
+            const matches = awardedQuota.quota.match(/\d+/g); // Extract all numbers from the string
+            if (matches) {
+              const numberOfIndividualQuotas = matches.length;
+              return sum + (numberOfIndividualQuotas * campaign.ticketValue);
+            }
+            return sum;
+          },
+          0,
+        );
+
+        return {
+          ...campaign,
+          soldTickets,
+          collectedAmount,
+        };
+      }),
+    );
+
+    return enrichedCampaigns;
   }
 
   async create(dto: CreateCampaignDto, userId: ObjectId) {

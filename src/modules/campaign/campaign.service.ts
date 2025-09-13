@@ -67,7 +67,7 @@ export class CampaignService {
 
     async getAwardedQuotasByCampaignId(campaignId: ObjectId): Promise<AwardedQuotaEntity[]> {
     return this.awardedQuotaRepository.find({
-      where: { 'campaigns._id': campaignId },
+      campaignId: campaignId,
     });
   }
 }

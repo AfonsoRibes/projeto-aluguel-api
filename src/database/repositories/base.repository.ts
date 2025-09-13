@@ -32,6 +32,10 @@ export class BaseRepository<T extends ObjectLiteral> {
     return this.repository.find();
   }
 
+  async find(options?: FindOptionsWhere<T>): Promise<T[]> {
+    return this.repository.find(options);
+  }
+
   async findOneOrFail(
     options: FindOneOptions<T>,
     message = 'Entity not found',

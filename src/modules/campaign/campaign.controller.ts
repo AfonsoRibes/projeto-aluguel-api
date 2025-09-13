@@ -22,6 +22,7 @@ import { JwtAuthGuard } from '../../auth/guards/jwt-auth.guard';
 import { UserEntity } from '../../database/entities/user.entity';
 import { CampaignService } from './campaign.service';
 import { CreateCampaignDto } from './dto/create-campaign.dto';
+import { PayCampaignDto } from './dto/pay-campaign.dto';
 
 @ApiTags('campaign')
 @Controller('campaign')
@@ -30,11 +31,12 @@ export class CampaignController {
 
   @Patch('pay/:id')
   @ApiOperation({ summary: 'Pagar uma campanha' })
+  @ApiBody({ type: PayCampaignDto })
   @ApiResponse({ status: 200, description: 'Campanha paga com sucesso.' })
   @ApiParam({ name: 'id', description: 'ID da campanha', type: String })
-  payCampaign(@Param('id') id: string) {
-    console.log('Received ID:', id);
-    return this.campaignService.payCampaign(new ObjectId(id));
+  payCampaign(@Param('id') id: string, @Body() dto: PayCampaignDto) {
+    console.log('Received ID:', id, 'Buyer Name:', dto.buyerName, 'Selected Quotas:', dto.selectedQuotas);
+    return this.campaignService.payCampaign(new ObjectId(id), dto.buyerName, dto.selectedQuotas);
   }
 
   @Get(':id')
@@ -43,6 +45,14 @@ export class CampaignController {
   @ApiParam({ name: 'id', description: 'ID da campanha', type: String })
   getById(@Param('id') id: ObjectId) {
     return this.campaignService.getById(id);
+  }
+
+  @Get(':id/awarded-quotas')
+  @ApiOperation({ summary: 'Get cotas premiadas de uma campanha' })
+  @ApiResponse({ status: 200, description: 'Cotas premiadas retornadas com sucesso.' })
+  @ApiParam({ name: 'id', description: 'ID da campanha', type: String })
+  async getAwardedQuotas(@Param('id') id: string) {
+    return this.campaignService.getAwardedQuotasByCampaignId(new ObjectId(id));
   }
 
   @Get()

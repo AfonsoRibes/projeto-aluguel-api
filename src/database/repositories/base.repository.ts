@@ -80,10 +80,8 @@ export class BaseRepository<T extends ObjectLiteral> {
 
     const skip = (page - 1) * limit;
 
-    // 🔍 Condição base
     let where: FindOptionsWhere<T> | FindOptionsWhere<T>[] = filters;
 
-    // 🔍 Busca textual (usando Like do TypeORM)
     if (search && searchFields.length > 0) {
       const searchConditions: FindOptionsWhere<T>[] = searchFields.map(
         (field) =>
@@ -97,7 +95,6 @@ export class BaseRepository<T extends ObjectLiteral> {
         : [where, ...searchConditions];
     }
 
-    // 🔍 Ordenação
     const orderOptions: FindOptionsOrder<T> =
       sortBy != null ? ({ [sortBy]: order } as any) : {};
 

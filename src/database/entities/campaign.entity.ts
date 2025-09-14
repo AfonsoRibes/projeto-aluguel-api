@@ -6,7 +6,6 @@ import { RaffleSelectionTypeEnum } from '../../shared/enums/reffle-selection-typ
 import { AbstractEntity } from './abstract.entity';
 import { AwardedQuotaEntity } from './awarded-quota.entity';
 import { CampaignPrizeEntity } from './campaign-prize.entity';
-import { PromotionEntity } from './promotion.entity';
 import { UserEntity } from './user.entity';
 
 @Entity('campaign')
@@ -38,7 +37,7 @@ export class CampaignEntity extends AbstractEntity {
   @Column({ type: 'string', nullable: true })
   contactPhone?: string;
 
-    @Column({ type: 'number', nullable: true })
+  @Column({ type: 'number', nullable: true })
   minQuota?: number;
 
   @Column({ type: 'number', nullable: true })
@@ -72,18 +71,16 @@ export class CampaignEntity extends AbstractEntity {
   @Column()
   userId: ObjectId;
 
-  // --- FK Awarded Quotas ---
   @OneToMany(() => AwardedQuotaEntity, (awarded) => awarded.campaigns)
   awardedQuotas: AwardedQuotaEntity[];
 
-  // --- FK Campaign Prize ---
   @OneToMany(
     () => CampaignPrizeEntity,
     (campaignPrize) => campaignPrize.campaigns,
   )
   campaignPrizes: CampaignPrizeEntity[];
 
-    @Column({ type: 'boolean', default: false })
+  @Column({ type: 'boolean', default: false })
   isPromotionActive: boolean;
 
   @Column({ type: 'string', nullable: true })

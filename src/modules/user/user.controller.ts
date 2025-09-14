@@ -17,6 +17,7 @@ import { UserService } from './user.service';
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
+  //TODO remove somente para testes
   @Get()
   // @UseGuards(JwtAuthGuard)
   // @ApiBearerAuth()

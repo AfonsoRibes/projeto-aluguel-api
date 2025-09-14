@@ -35,8 +35,11 @@ export class CampaignController {
   @ApiResponse({ status: 200, description: 'Campanha paga com sucesso.' })
   @ApiParam({ name: 'id', description: 'ID da campanha', type: String })
   payCampaign(@Param('id') id: string, @Body() dto: PayCampaignDto) {
-    console.log('Received ID:', id, 'Buyer Name:', dto.buyerName, 'Selected Quotas:', dto.selectedQuotas);
-    return this.campaignService.payCampaign(new ObjectId(id), dto.buyerName, dto.selectedQuotas);
+    return this.campaignService.payCampaign(
+      new ObjectId(id),
+      dto.buyerName,
+      dto.selectedQuotas,
+    );
   }
 
   @Get(':id')
@@ -49,7 +52,10 @@ export class CampaignController {
 
   @Get(':id/awarded-quotas')
   @ApiOperation({ summary: 'Get cotas premiadas de uma campanha' })
-  @ApiResponse({ status: 200, description: 'Cotas premiadas retornadas com sucesso.' })
+  @ApiResponse({
+    status: 200,
+    description: 'Cotas premiadas retornadas com sucesso.',
+  })
   @ApiParam({ name: 'id', description: 'ID da campanha', type: String })
   async getAwardedQuotas(@Param('id') id: string) {
     return this.campaignService.getAwardedQuotasByCampaignId(new ObjectId(id));

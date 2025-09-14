@@ -1,6 +1,6 @@
 import { createParamDecorator, ExecutionContext } from '@nestjs/common';
-import { UserEntity } from '../../database/entities/user.entity';
 import { ObjectId } from 'mongoose';
+import { UserEntity } from '../../database/entities/user.entity';
 
 export const User = createParamDecorator(
   (data: unknown, ctx: ExecutionContext): Omit<UserEntity, 'password'> => {
@@ -12,6 +12,6 @@ export const User = createParamDecorator(
 export const UserId = createParamDecorator(
   (data: unknown, ctx: ExecutionContext): ObjectId | string => {
     const request = ctx.switchToHttp().getRequest();
-    return request.user?._id; // retorna apenas o id
+    return request.user?._id;
   },
 );

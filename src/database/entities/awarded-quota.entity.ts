@@ -14,10 +14,13 @@ export class AwardedQuotaEntity extends AbstractEntity {
   @Column({ type: 'string', name: 'buyer_name', nullable: false })
   buyerName: string;
 
-  @Column({ type: 'string', name: 'campaign_id' })
+  @Column({ type: 'string' })
   campaignId: ObjectId;
 
   @ManyToOne(() => CampaignEntity, (campaign) => campaign.awardedQuotas)
   @JoinColumn({ name: 'campaign_id' })
   campaigns: CampaignEntity;
+
+  @Column({ type: 'number' })
+  pricePaid: number;
 }

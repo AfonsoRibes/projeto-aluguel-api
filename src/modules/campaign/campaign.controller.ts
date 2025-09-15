@@ -39,6 +39,7 @@ export class CampaignController {
       new ObjectId(id),
       dto.buyerName,
       dto.selectedQuotas,
+      dto.pricePaid,
     );
   }
 

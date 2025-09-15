@@ -1,4 +1,4 @@
-import { IsString, IsNotEmpty, IsArray } from 'class-validator';
+import { IsString, IsNotEmpty, IsArray, IsNumber } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class PayCampaignDto {
@@ -12,4 +12,9 @@ export class PayCampaignDto {
   @IsString({ each: true })
   @IsNotEmpty({ each: true })
   selectedQuotas: string[];
+
+  @ApiProperty({ description: 'Preço pago pelas cotas' })
+  @IsNumber()
+  @IsNotEmpty()
+  pricePaid: number;
 }

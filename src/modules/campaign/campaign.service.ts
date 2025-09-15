@@ -18,6 +18,7 @@ export class CampaignService {
     _id: ObjectId,
     buyerName: string,
     selectedQuotas: string[],
+    pricePaid: number,
   ) {
     const campaign = await this.campaignRepository.findOneOrFail(
       {
@@ -31,6 +32,8 @@ export class CampaignService {
       prize: 'Default Prize',
       buyerName: buyerName,
       campaigns: campaign,
+      campaignId: campaign._id,
+      pricePaid,
     });
 
     return await this.campaignRepository.update(_id, { paid: true });
@@ -50,7 +53,7 @@ export class CampaignService {
     const enrichedCampaigns = await Promise.all(
       campaigns.map(async (campaign) => {
         const awardedQuotas = await this.awardedQuotaRepository.find({
-          campaignId: campaign._id,
+          campaignId: new ObjectId(campaign._id),
         });
 
         const soldTickets = awardedQuotas.reduce((totalSold, awardedQuota) => {
@@ -62,12 +65,7 @@ export class CampaignService {
         }, 0);
 
         const collectedAmount = awardedQuotas.reduce((sum, awardedQuota) => {
-          const matches = awardedQuota.quota.match(/\d+/g);
-          if (matches) {
-            const numberOfIndividualQuotas = matches.length;
-            return sum + numberOfIndividualQuotas * campaign.ticketValue;
-          }
-          return sum;
+          return sum + (awardedQuota.pricePaid || 0);
         }, 0);
 
         return {

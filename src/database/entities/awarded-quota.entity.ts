@@ -23,4 +23,7 @@ export class AwardedQuotaEntity extends AbstractEntity {
 
   @Column({ type: 'number' })
   pricePaid: number;
+
+  @Column({ type: 'number', nullable: true })
+  quotaCount: number;
 }

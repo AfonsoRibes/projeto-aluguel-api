@@ -51,6 +51,17 @@ export class CampaignController {
     return this.campaignService.getById(id);
   }
 
+  @Get(':id/top-buyers')
+  @ApiOperation({ summary: 'Get top 3 compradores de uma campanha' })
+  @ApiResponse({
+    status: 200,
+    description: 'Top 3 compradores retornados com sucesso.',
+  })
+  @ApiParam({ name: 'id', description: 'ID da campanha', type: String })
+  async getTopBuyers(@Param('id') id: string) {
+    return this.campaignService.getTopBuyers(new ObjectId(id));
+  }
+
   @Get(':id/awarded-quotas')
   @ApiOperation({ summary: 'Get cotas premiadas de uma campanha' })
   @ApiResponse({

@@ -34,6 +34,7 @@ export class CampaignService {
       campaigns: campaign,
       campaignId: campaign._id,
       pricePaid,
+      quotaCount: selectedQuotas.length,
     });
 
     return await this.campaignRepository.update(_id, { paid: true });
@@ -102,5 +103,9 @@ export class CampaignService {
     return this.awardedQuotaRepository.find({
       campaignId: campaignId,
     });
+  }
+
+  async getTopBuyers(campaignId: ObjectId) {
+    return this.awardedQuotaRepository.findTopBuyers(campaignId);
   }
 }

@@ -43,8 +43,8 @@ export class CampaignEntity extends AbstractEntity {
   @Column({ type: 'number', nullable: true })
   maxQuota?: number;
 
-  @Column({ type: 'date', nullable: true })
-  releaseDate?: Date;
+    @Column({ type: 'date', nullable: true })
+  drawDate?: Date;
 
   @Column({
     type: 'enum',

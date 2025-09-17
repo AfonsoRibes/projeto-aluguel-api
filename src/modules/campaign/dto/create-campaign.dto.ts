@@ -60,9 +60,9 @@ export class CreateCampaignDto {
   @IsNumber()
   maxQuota?: number;
 
-  @ApiPropertyOptional({ example: '2025-12-25T00:00:00Z' })
+    @ApiPropertyOptional({ example: '2025-12-25T00:00:00Z' })
   @IsOptional()
-  releaseDate?: Schema.Types.Date;
+  drawDate?: Schema.Types.Date;
 
   @ApiPropertyOptional({ example: true })
   @IsOptional()

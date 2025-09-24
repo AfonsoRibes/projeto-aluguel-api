@@ -1,10 +1,10 @@
 import { NotFoundException } from '@nestjs/common';
-import { ObjectId } from 'mongodb';
 import {
   DeepPartial,
   FindOneOptions,
   FindOptionsOrder,
   FindOptionsWhere,
+  In,
   Like,
   MongoRepository,
   ObjectLiteral,
@@ -47,24 +47,23 @@ export class BaseRepository<T extends ObjectLiteral> {
     return entity;
   }
 
-  async findById(_id: ObjectId): Promise<T | null> {
-    return this.repository.findOne({ where: { _id } });
+  async findById(id: string): Promise<T | null> {
+    return this.repository.findOne({ where: { id } });
   }
 
-  async findByIds(ids: ObjectId[]): Promise<T[]> {
-    const objectIds = ids.map((id) => new ObjectId(id));
+  async findByIds(ids: string[]): Promise<T[]> {
     return this.repository.find({
-      where: { _id: { $in: objectIds } } as any,
+      where: { id: In(ids) },
     });
   }
 
-  async update(_id: ObjectId, data: Partial<T>): Promise<T | null> {
-    await this.repository.updateOne({ _id }, { $set: data });
-    return this.findById(_id);
+  async update(id: string, data: Partial<T>): Promise<T | null> {
+    await this.repository.updateOne({ id }, { $set: data });
+    return this.findById(id);
   }
 
-  async delete(_id: ObjectId) {
-    return this.repository.deleteOne({ _id });
+  async delete(id: string) {
+    return this.repository.deleteOne({ id });
   }
 
   async findPaginated(options: PaginationOptions<T>) {

@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { ObjectId } from 'mongodb';
 import { MongoRepository } from 'typeorm';
 import { UserEntity } from '../entities/user.entity';
 import { BaseRepository } from './base.repository';
@@ -27,16 +26,15 @@ export class UserRepository extends BaseRepository<UserEntity> {
   }
 
   async update(
-    _id: ObjectId,
+    id: string,
     data: Partial<UserEntity>,
   ): Promise<UserEntity | null> {
-    await this.userRepo.updateOne({ _id }, { $set: data });
-    return this.userRepo.findOne({ where: { _id } });
+    await this.userRepo.updateOne({ id }, { $set: data });
+    return this.userRepo.findOne({ where: { id } });
   }
 
   async findUserById(id: string): Promise<Omit<UserEntity, 'password'> | null> {
-    const objectId = new ObjectId(id);
-    const user = await this.userRepo.findOne({ where: { _id: objectId } });
+    const user = await this.userRepo.findOne({ where: { id } });
 
     if (!user) return null;
 

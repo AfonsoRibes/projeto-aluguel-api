@@ -1,13 +1,16 @@
-import { ObjectId } from 'mongodb';
-import { CreateDateColumn, ObjectIdColumn, UpdateDateColumn } from 'typeorm';
+import {
+  CreateDateColumn,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 
 export abstract class AbstractEntity {
-  @ObjectIdColumn()
-  _id: ObjectId;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
-  @CreateDateColumn({ type: 'date' })
+  @CreateDateColumn({ name: 'created_at', type: 'timestamp' })
   createdAt: Date;
 
-  @UpdateDateColumn({ type: 'date' })
+  @UpdateDateColumn({ name: 'updated_at', type: 'datetime' })
   updatedAt: Date;
 }

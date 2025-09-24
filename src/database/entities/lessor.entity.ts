@@ -1,47 +1,45 @@
-import { Exclude } from 'class-transformer';
 import { Column, Entity, Index } from 'typeorm';
 import { AbstractEntity } from './abstract.entity';
 
-@Entity()
+@Entity('lessor')
 export class LessorEntity extends AbstractEntity {
-  @Column()
+  @Column({ type: 'varchar', length: 100 })
   name: string;
 
   @Index({ unique: true })
-  @Column()
+  @Column({ type: 'varchar', length: 150 })
   email: string;
 
-  @Exclude()
-  @Column()
+  @Column({ type: 'varchar', length: 100 })
   nationality: string;
 
-  @Column({ nullable: true })
+  @Column({ type: 'varchar', length: 50, nullable: true })
   civilState?: string;
 
-  @Column({ nullable: true })
+  @Column({ type: 'varchar', length: 100, nullable: true })
   job?: string;
 
-  @Column({ nullable: true })
-  document: string;
+  @Column({ type: 'varchar', length: 20, nullable: true })
+  document?: string;
 
-  @Column({ nullable: true })
-  registerNumber: string;
+  @Column({ type: 'varchar', length: 50, nullable: true })
+  registerNumber?: string;
 
-  @Column({ type: 'string', name: 'cep' })
+  @Column({ type: 'varchar', length: 10 })
   cep: string;
 
-  @Column({ type: 'string', name: 'address' })
+  @Column({ type: 'varchar', length: 255 })
   address: string;
 
-  @Column({ type: 'string', name: 'neighborhood' })
+  @Column({ type: 'varchar', length: 100 })
   neighborhood: string;
 
-  @Column({ type: 'string', name: 'state' })
+  @Column({ type: 'varchar', length: 50 })
   state: string;
 
-  @Column({ type: 'string', name: 'complement' })
+  @Column({ type: 'varchar', length: 100, nullable: true })
   complement: string;
 
-  @Column({ type: 'number', name: 'number' })
+  @Column({ type: 'int', nullable: true })
   number: number;
 }

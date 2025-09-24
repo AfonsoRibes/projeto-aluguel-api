@@ -20,7 +20,7 @@ export class AuthService {
       password: hashed,
     });
 
-    const accessToken = this.jwtService.sign({ sub: user._id });
+    const accessToken = this.jwtService.sign({ sub: user.id });
     const refreshToken = uuid();
 
     return { accessToken, refreshToken };
@@ -32,9 +32,9 @@ export class AuthService {
       throw new UnauthorizedException('Credenciais inválidas');
     }
 
-    const accessToken = this.jwtService.sign({ sub: user._id });
+    const accessToken = this.jwtService.sign({ sub: user.id });
     const refreshToken = uuid();
-    await this.userRepository.update(user._id, { refreshToken });
+    await this.userRepository.update(user.id, { refreshToken });
 
     return { accessToken, refreshToken };
   }
@@ -51,7 +51,7 @@ export class AuthService {
     const user = await this.userRepository.findByRefreshToken(refreshToken);
     if (!user) throw new UnauthorizedException('Refresh token inválido');
 
-    const accessToken = this.jwtService.sign({ sub: user._id });
+    const accessToken = this.jwtService.sign({ sub: user.id });
     return { accessToken };
   }
 
@@ -60,7 +60,7 @@ export class AuthService {
     if (!user) return;
 
     const token = uuid();
-    await this.userRepository.update(user._id, { resetToken: token });
+    await this.userRepository.update(user.id, { resetToken: token });
 
     return token;
   }
@@ -70,7 +70,7 @@ export class AuthService {
     if (!user) throw new UnauthorizedException('Token inválido');
 
     const hashed = await bcrypt.hash(newPassword, 10);
-    await this.userRepository.update(user._id, {
+    await this.userRepository.update(user.id, {
       password: hashed,
       resetToken: undefined,
     });

@@ -2,25 +2,25 @@ import { Exclude } from 'class-transformer';
 import { Column, Entity, Index } from 'typeorm';
 import { AbstractEntity } from './abstract.entity';
 
-@Entity()
+@Entity('user')
 export class UserEntity extends AbstractEntity {
-  @Column()
+  @Column({ type: 'varchar', length: 100 })
   name: string;
 
   @Index({ unique: true })
-  @Column()
+  @Column({ type: 'varchar', length: 150 })
   email: string;
 
   @Exclude()
-  @Column()
+  @Column({ type: 'varchar', length: 255 })
   password: string;
 
-  @Column({ nullable: true })
+  @Column({ type: 'varchar', length: 255, nullable: true })
   refreshToken?: string;
 
-  @Column({ nullable: true })
+  @Column({ type: 'varchar', length: 255, nullable: true })
   resetToken?: string;
 
-  @Column({ nullable: true })
+  @Column({ type: 'varchar', length: 20, nullable: true })
   phone?: string;
 }

@@ -1,14 +1,13 @@
-import { ObjectId } from 'mongodb';
 import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm';
 import { AbstractEntity } from './abstract.entity';
 import { UserEntity } from './user.entity';
 
-@Entity()
+@Entity('rent')
 export class RentEntity extends AbstractEntity {
-  @Column({ type: 'string', name: 'name' })
+  @Column({ type: 'varchar', length: 150 })
   name: string;
 
-  @Column({ type: 'string', name: 'address' })
+  @Column({ type: 'varchar', length: 255 })
   address: string;
 
   @ManyToOne(() => UserEntity)
@@ -16,5 +15,5 @@ export class RentEntity extends AbstractEntity {
   user: UserEntity;
 
   @Column()
-  userId: ObjectId;
+  userId: number;
 }

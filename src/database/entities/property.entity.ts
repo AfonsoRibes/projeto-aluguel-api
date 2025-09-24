@@ -1,60 +1,58 @@
-import { ObjectId } from 'mongodb';
 import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm';
 import { AbstractEntity } from './abstract.entity';
 import { UserEntity } from './user.entity';
 
-@Entity()
+@Entity('property')
 export class PropertyEntity extends AbstractEntity {
-  @Column({ type: 'string', name: 'name' })
+  @Column({ type: 'varchar', length: 150 })
   name: string;
 
-  @Column({ type: 'string', name: 'cep' })
+  @Column({ type: 'varchar', length: 10 })
   cep: string;
 
-  @Column({ type: 'string', name: 'address' })
+  @Column({ type: 'varchar', length: 255 })
   address: string;
 
-  @Column({ type: 'string', name: 'neighborhood' })
+  @Column({ type: 'varchar', length: 100 })
   neighborhood: string;
 
-  @Column({ type: 'string', name: 'state' })
+  @Column({ type: 'varchar', length: 50 })
   state: string;
 
-  @Column({ type: 'string', name: 'complement' })
+  @Column({ type: 'varchar', length: 100, nullable: true })
   complement: string;
 
-  @Column({ type: 'number', name: 'number' })
+  @Column({ type: 'int' })
   number: number;
 
-  //comercial/residencial
-  @Column({ type: 'string', name: 'purpose' })
+  @Column({ type: 'varchar', length: 50 })
   purpose: string;
 
-  @Column({ type: 'string', name: 'guarantee' })
+  @Column({ type: 'varchar', length: 50 })
   guarantee: string;
 
-  @Column({ type: 'number', name: 'rentPrice' })
+  @Column({ type: 'decimal', precision: 10, scale: 2 })
   rentPrice: number;
 
-  @Column({ type: 'number', name: 'condominiumPrice' })
+  @Column({ type: 'decimal', precision: 10, scale: 2 })
   condominiumPrice: number;
 
-  @Column({ type: 'number', name: 'propertyTax' })
+  @Column({ type: 'decimal', precision: 10, scale: 2 })
   propertyTax: number;
 
-  @Column({ type: 'date', name: 'initialContractDate' })
+  @Column({ type: 'date' })
   initialContractDate: Date;
 
-  @Column({ type: 'date', name: 'finalContractDate' })
+  @Column({ type: 'date' })
   finalContractDate: Date;
 
-  @Column({ type: 'date', name: 'finalDate', nullable: true })
-  finalDate: Date;
+  @Column({ type: 'date', nullable: true })
+  finalDate?: Date;
 
   @ManyToOne(() => UserEntity)
   @JoinColumn({ name: 'userId' })
   user: UserEntity;
 
   @Column()
-  userId: ObjectId;
+  userId: number;
 }

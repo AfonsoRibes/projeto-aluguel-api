@@ -1,4 +1,5 @@
 import { Body, Controller, Delete, Get, Put, UseGuards } from '@nestjs/common';
+import { Post } from '@nestjs/common';
 import {
   ApiBearerAuth,
   ApiBody,
@@ -46,5 +47,15 @@ export class UserController {
   @ApiResponse({ status: 401, description: 'Não autorizado.' })
   delete(@UserId() userId: string) {
     return this.userService.delete(userId);
+  }
+
+  @Post('logout')
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
+  @ApiOperation({ summary: 'Logout do usuário' })
+  @ApiResponse({ status: 200, description: 'Logout realizado com sucesso.' })
+  @ApiResponse({ status: 401, description: 'Não autorizado.' })
+  logout(@UserId() userId: string) {
+    return this.userService.logout(userId);
   }
 }

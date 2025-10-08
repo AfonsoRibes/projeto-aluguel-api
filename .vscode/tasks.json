@@ -1,0 +1,10 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "Reiniciar API para aplicar endpoint de logout",
+			"type": "shell",
+			"command": "npm run build && npm run start"
+		}
+	]
+}

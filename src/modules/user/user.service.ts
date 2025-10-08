@@ -17,4 +17,9 @@ export class UserService {
   async delete(id: string) {
     return this.userRepository.delete(id);
   }
+
+  async logout(id: string) {
+    // Invalida o refreshToken do usuário
+  return this.userRepository.update(id, { refreshToken: undefined });
+  }
 }

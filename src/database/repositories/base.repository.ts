@@ -6,7 +6,7 @@ import {
   FindOptionsWhere,
   In,
   Like,
-  MongoRepository,
+  Repository,
   ObjectLiteral,
 } from 'typeorm';
 
@@ -21,7 +21,7 @@ export interface PaginationOptions<T> {
 }
 
 export class BaseRepository<T extends ObjectLiteral> {
-  constructor(protected readonly repository: MongoRepository<T>) {}
+  constructor(protected readonly repository: Repository<T>) {}
 
   async create(data: DeepPartial<T>): Promise<T> {
     const entity = this.repository.create(data);
@@ -33,7 +33,7 @@ export class BaseRepository<T extends ObjectLiteral> {
   }
 
   async find(options?: FindOptionsWhere<T>): Promise<T[]> {
-    return this.repository.find(options);
+    return this.repository.find({ where: options });
   }
 
   async findOneOrFail(
@@ -48,22 +48,20 @@ export class BaseRepository<T extends ObjectLiteral> {
   }
 
   async findById(id: string): Promise<T | null> {
-    return this.repository.findOne({ where: { id } });
+    return this.repository.findOneBy({ id } as any);
   }
 
   async findByIds(ids: string[]): Promise<T[]> {
-    return this.repository.find({
-      where: { id: In(ids) },
-    });
+    return this.repository.findBy({ id: In(ids) } as any);
   }
 
   async update(id: string, data: Partial<T>): Promise<T | null> {
-    await this.repository.updateOne({ id }, { $set: data });
+    await this.repository.update(id, data);
     return this.findById(id);
   }
 
   async delete(id: string) {
-    return this.repository.deleteOne({ id });
+    return this.repository.delete(id);
   }
 
   async findPaginated(options: PaginationOptions<T>) {

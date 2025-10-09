@@ -1,5 +1,6 @@
 import { Controller, Get, Post, Put, Delete, Body, HttpException, HttpStatus, Headers, Param } from '@nestjs/common';
 import { AppService } from './app.service';
+import { DataService } from './data.service';
 
 interface User {
   id: string;
@@ -68,30 +69,40 @@ interface Pagamento {
 
 @Controller()
 export class AppController {
-  private users: User[] = [
-    {
-      id: '1',
-      email: 'teste@teste.com',
-      password: '$2b$10$MTIzNDU2',
-      name: 'Usuário Teste',
-      telefone: '(11) 99999-9999',
-      endereco: 'Rua Teste, 123',
-      cep: '01234-567',
-      rg: '12.345.678-9',
-      cpf: '123.456.789-00',
-      banco: 'Banco do Brasil',
-      agencia: '1234',
-      conta: '12345-6',
-      pix: 'teste@teste.com',
-      deleted: false
-    }
-  ];
-  
-  private tokens = new Map<string, string>();
-  private moradores: Morador[] = [];
-  private pagamentos: Pagamento[] = [];
+  private data: any;
 
-  constructor(private readonly appService: AppService) {}
+  constructor(private readonly appService: AppService, private readonly dataService: DataService) {
+    this.data = this.dataService.loadData();
+    if (this.data.users.length === 0) {
+      this.data.users = [{
+        id: '1',
+        email: 'teste@teste.com',
+        password: '$2b$10$MTIzNDU2',
+        name: 'Usuário Teste',
+        telefone: '(11) 99999-9999',
+        endereco: 'Rua Teste, 123',
+        cep: '01234-567',
+        rg: '12.345.678-9',
+        cpf: '123.456.789-00',
+        banco: 'Banco do Brasil',
+        agencia: '1234',
+        conta: '12345-6',
+        pix: 'teste@teste.com',
+        deleted: false
+      }];
+      this.saveData();
+    }
+  }
+
+  private saveData() {
+    this.dataService.saveData(this.data);
+  }
+
+  private get users() { return this.data.users; }
+  private get tokens() { return this.data.tokens; }
+  private get imoveis() { return this.data.imoveis; }
+  private get moradores() { return this.data.moradores; }
+  private get pagamentos() { return this.data.pagamentos; }
 
   @Get()
   getHello(): string {
@@ -110,32 +121,7 @@ export class AppController {
     return Math.random().toString(36).substring(2) + Date.now().toString(36);
   }
 
-  private imoveis: Imovel[] = [
-    {
-      id: 1,
-      name: 'Apartamento Centro',
-      address: 'Rua das Flores, 123',
-      neighborhood: 'Centro',
-      state: 'SP',
-      rentPrice: 1500,
-      Unidades: [
-        { id: 1, numeroUnidade: 101, valorAluguel: 1500, ocupada: false, imovelId: 1 },
-        { id: 2, numeroUnidade: 102, valorAluguel: 1600, ocupada: false, imovelId: 1 }
-      ]
-    },
-    {
-      id: 2,
-      name: 'Casa Jardins',
-      address: 'Av. Paulista, 456',
-      neighborhood: 'Jardins',
-      state: 'SP',
-      rentPrice: 2500,
-      Unidades: [
-        { id: 3, numeroUnidade: 201, valorAluguel: 2500, ocupada: false, imovelId: 2 },
-        { id: 4, numeroUnidade: 202, valorAluguel: 2700, ocupada: false, imovelId: 2 }
-      ]
-    }
-  ];
+
 
   @Get('imoveis/buscar')
   buscarImoveis() {
@@ -145,11 +131,11 @@ export class AppController {
   @Get('auth/details')
   authDetails(@Headers('authorization') auth?: string) {
     const token = auth?.replace('Bearer ', '');
-    if (!token || !this.tokens.has(token)) {
+    if (!token || !this.tokens[token]) {
       throw new HttpException('Token inválido', HttpStatus.UNAUTHORIZED);
     }
     
-    const userId = this.tokens.get(token);
+    const userId = this.tokens[token];
     const user = this.users.find(u => u.id === userId && !u.deleted);
     
     if (!user) {
@@ -177,7 +163,8 @@ export class AppController {
     }
     
     const token = this.generateToken();
-    this.tokens.set(token, user.id);
+    this.tokens[token] = user.id;
+    this.saveData();
     
     return {
       accessToken: token,
@@ -204,7 +191,8 @@ export class AppController {
     this.users.push(newUser);
     
     const token = this.generateToken();
-    this.tokens.set(token, newUser.id);
+    this.tokens[token] = newUser.id;
+    this.saveData();
     
     return {
       accessToken: token,
@@ -264,7 +252,7 @@ export class AppController {
       }
     }
     
-    this.pagamentos = this.pagamentos.filter(p => p.moradorId !== moradorId);
+    this.data.pagamentos = this.data.pagamentos.filter(p => p.moradorId !== moradorId);
     
     return { message: 'Morador removido com sucesso!' };
   }
@@ -279,8 +267,8 @@ export class AppController {
         const unidade = imovel.Unidades[unidadeIndex];
         
         if (unidade.morador) {
-          this.moradores = this.moradores.filter(m => m.id !== unidade.morador!.id);
-          this.pagamentos = this.pagamentos.filter(p => p.moradorId !== unidade.morador!.id);
+          this.data.moradores = this.data.moradores.filter(m => m.id !== unidade.morador!.id);
+          this.data.pagamentos = this.data.pagamentos.filter(p => p.moradorId !== unidade.morador!.id);
         }
         
         imovel.Unidades.splice(unidadeIndex, 1);
@@ -316,6 +304,25 @@ export class AppController {
     return [];
   }
 
+  @Get('test')
+  test() {
+    console.log('ENDPOINT TEST CHAMADO');
+    return { message: 'Servidor funcionando!' };
+  }
+
+  @Post('test-post')
+  testPost(@Body() body: any) {
+    console.log('ENDPOINT TEST POST CHAMADO');
+    console.log('Body:', body);
+    return { message: 'POST funcionando!', data: body };
+  }
+
+  @Post('test-validation')
+  testValidation(@Body() body: any) {
+    console.log('TEST VALIDATION CHAMADO');
+    throw new HttpException('Preencha os seguintes campos: Nome, Email, Telefone', HttpStatus.BAD_REQUEST);
+  }
+
   @Post('imoveis/add')
   addImovel(@Body() body: any) {
     const novoImovel = {
@@ -328,6 +335,7 @@ export class AppController {
       Unidades: []
     };
     this.imoveis.push(novoImovel);
+    this.saveData();
     return { message: 'Imóvel cadastrado com sucesso' };
   }
 
@@ -374,6 +382,7 @@ export class AppController {
     }
     
     imovel.Unidades.push(novaUnidade);
+    this.saveData();
     
     return { message: ocupada ? 'Unidade cadastrada com sucesso!' : 'Unidade cadastrada como vaga!' };
   }
@@ -405,12 +414,59 @@ export class AppController {
   buscarUnidades(@Body() body: any) {
     const { imovelId } = body;
     const imovel = this.imoveis.find(i => i.id === imovelId);
-    return imovel ? imovel.Unidades : [];
+    if (!imovel) return [];
+    
+    return imovel.Unidades.map(unidade => {
+      const morador = this.moradores.find(m => m.unidadeId === unidade.id);
+      return {
+        ...unidade,
+        morador,
+        ocupada: !!morador
+      };
+    });
   }
 
+  @Post('imoveis/criar/contrato')
   @Post('imoveis/add/morador')
   addMorador(@Body() body: any) {
+    console.log('ENDPOINT CHAMADO - imoveis/criar/contrato');
+    console.log('Body recebido:', body);
+    
     const { unidadeId, imovelId, nome, email, telefone, cpf, rg, dataNascimento, dataInicioContrato, dataFimContrato, diaVencimento } = body;
+    
+    const camposFaltando: string[] = [];
+    
+    if (!nome || (typeof nome === 'string' && nome.trim() === '')) {
+      camposFaltando.push('Nome do morador');
+    }
+    if (!email || (typeof email === 'string' && email.trim() === '')) {
+      camposFaltando.push('E-mail');
+    }
+    if (!telefone || (typeof telefone === 'string' && telefone.trim() === '')) {
+      camposFaltando.push('Telefone');
+    }
+    if (!cpf || (typeof cpf === 'string' && cpf.trim() === '')) {
+      camposFaltando.push('CPF');
+    }
+    if (!rg || (typeof rg === 'string' && rg.trim() === '')) {
+      camposFaltando.push('RG');
+    }
+    if (!dataNascimento || (typeof dataNascimento === 'string' && dataNascimento.trim() === '')) {
+      camposFaltando.push('Data de Nascimento');
+    }
+    if (!dataInicioContrato || (typeof dataInicioContrato === 'string' && dataInicioContrato.trim() === '')) {
+      camposFaltando.push('Início do contrato');
+    }
+    if (!dataFimContrato || (typeof dataFimContrato === 'string' && dataFimContrato.trim() === '')) {
+      camposFaltando.push('Fim do contrato');
+    }
+    if (!diaVencimento || diaVencimento === 0 || diaVencimento === '0' || diaVencimento === '') {
+      camposFaltando.push('Dia de vencimento');
+    }
+    
+    if (camposFaltando.length > 0) {
+      throw new HttpException(`Preencha os seguintes campos: ${camposFaltando.join(', ')}`, HttpStatus.BAD_REQUEST);
+    }
     
     const imovel = this.imoveis.find(i => i.id === imovelId);
     if (!imovel) {
@@ -442,6 +498,7 @@ export class AppController {
     unidade.ocupada = true;
     
     this.gerarPagamentosRecorrentes(novoMorador, unidade.valorAluguel);
+    this.saveData();
     
     return { message: 'Morador cadastrado com sucesso!' };
   }

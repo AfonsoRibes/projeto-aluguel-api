@@ -1,0 +1,211 @@
+{
+  "users": [
+    {
+      "id": "1",
+      "email": "teste@teste.com",
+      "password": "$2b$10$MTIzNDU2",
+      "name": "Usuário Teste",
+      "telefone": "(11) 99999-9999",
+      "endereco": "Rua Teste, 123",
+      "cep": "01234-567",
+      "rg": "12.345.678-9",
+      "cpf": "123.456.789-00",
+      "banco": "Banco do Brasil",
+      "agencia": "1234",
+      "conta": "12345-6",
+      "pix": "teste@teste.com",
+      "deleted": false
+    },
+    {
+      "id": "2",
+      "email": "teste@gmail.com",
+      "password": "$2b$10$dGVzdGUxMjM=",
+      "name": "alysson eustaquio",
+      "deleted": false
+    }
+  ],
+  "imoveis": [
+    {
+      "id": 1,
+      "name": "Apartamento teste",
+      "address": ",  - ",
+      "rentPrice": 0,
+      "Unidades": [
+        {
+          "id": 1760031048243,
+          "numeroUnidade": 1,
+          "valorAluguel": 800,
+          "instalacaoAgua": null,
+          "instalacaoLuz": null,
+          "comodos": 3,
+          "ocupada": true,
+          "imovelId": 1,
+          "morador": {
+            "id": 1760032471858,
+            "nome": "morador Teste",
+            "email": "teste@gmail.com",
+            "telefone": "99999999999",
+            "cpf": "12345678900",
+            "rg": "123456789",
+            "dataNascimento": "1999-12-10",
+            "dataInicioContrato": "2025-10-10",
+            "dataFimContrato": "2026-10-10",
+            "diaVencimento": 10,
+            "unidadeId": 1760031048243,
+            "imovelId": 1
+          }
+        },
+        {
+          "id": 1760032597031,
+          "numeroUnidade": 2,
+          "valorAluguel": 500,
+          "instalacaoAgua": null,
+          "instalacaoLuz": null,
+          "comodos": 2,
+          "ocupada": false,
+          "imovelId": 1
+        }
+      ]
+    }
+  ],
+  "moradores": [
+    {
+      "id": 1760032471858,
+      "nome": "morador Teste",
+      "email": "teste@gmail.com",
+      "telefone": "99999999999",
+      "cpf": "12345678900",
+      "rg": "123456789",
+      "dataNascimento": "1999-12-10",
+      "dataInicioContrato": "2025-10-10",
+      "dataFimContrato": "2026-10-10",
+      "diaVencimento": 10,
+      "unidadeId": 1760031048243,
+      "imovelId": 1
+    }
+  ],
+  "pagamentos": [
+    {
+      "id": 1760032471858.0369,
+      "moradorId": 1760032471858,
+      "valor": 800,
+      "dataVencimento": "2025-10-10",
+      "status": "pendente",
+      "mes": 10,
+      "ano": 2025
+    },
+    {
+      "id": 1760032471858.4712,
+      "moradorId": 1760032471858,
+      "valor": 800,
+      "dataVencimento": "2025-11-10",
+      "status": "pendente",
+      "mes": 11,
+      "ano": 2025
+    },
+    {
+      "id": 1760032471858.6978,
+      "moradorId": 1760032471858,
+      "valor": 800,
+      "dataVencimento": "2025-12-10",
+      "status": "pendente",
+      "mes": 12,
+      "ano": 2025
+    },
+    {
+      "id": 1760032471858.4739,
+      "moradorId": 1760032471858,
+      "valor": 800,
+      "dataVencimento": "2026-01-10",
+      "status": "pendente",
+      "mes": 1,
+      "ano": 2026
+    },
+    {
+      "id": 1760032471858.3425,
+      "moradorId": 1760032471858,
+      "valor": 800,
+      "dataVencimento": "2026-02-10",
+      "status": "pendente",
+      "mes": 2,
+      "ano": 2026
+    },
+    {
+      "id": 1760032471858.1658,
+      "moradorId": 1760032471858,
+      "valor": 800,
+      "dataVencimento": "2026-03-10",
+      "status": "pendente",
+      "mes": 3,
+      "ano": 2026
+    },
+    {
+      "id": 1760032471858.276,
+      "moradorId": 1760032471858,
+      "valor": 800,
+      "dataVencimento": "2026-04-10",
+      "status": "pendente",
+      "mes": 4,
+      "ano": 2026
+    },
+    {
+      "id": 1760032471858.687,
+      "moradorId": 1760032471858,
+      "valor": 800,
+      "dataVencimento": "2026-05-10",
+      "status": "pendente",
+      "mes": 5,
+      "ano": 2026
+    },
+    {
+      "id": 1760032471858.9697,
+      "moradorId": 1760032471858,
+      "valor": 800,
+      "dataVencimento": "2026-06-10",
+      "status": "pendente",
+      "mes": 6,
+      "ano": 2026
+    },
+    {
+      "id": 1760032471858.0544,
+      "moradorId": 1760032471858,
+      "valor": 800,
+      "dataVencimento": "2026-07-10",
+      "status": "pendente",
+      "mes": 7,
+      "ano": 2026
+    },
+    {
+      "id": 1760032471858.5618,
+      "moradorId": 1760032471858,
+      "valor": 800,
+      "dataVencimento": "2026-08-10",
+      "status": "pendente",
+      "mes": 8,
+      "ano": 2026
+    },
+    {
+      "id": 1760032471858.2068,
+      "moradorId": 1760032471858,
+      "valor": 800,
+      "dataVencimento": "2026-09-10",
+      "status": "pendente",
+      "mes": 9,
+      "ano": 2026
+    },
+    {
+      "id": 1760032471858.724,
+      "moradorId": 1760032471858,
+      "valor": 800,
+      "dataVencimento": "2026-10-10",
+      "status": "pendente",
+      "mes": 10,
+      "ano": 2026
+    }
+  ],
+  "tokens": {
+    "p9z4f96isysmgjory75": "2",
+    "kz49bmtqy5mgjows86": "2",
+    "2aajjz1nz3dmgjrntuf": "2"
+  }
+}

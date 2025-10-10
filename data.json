@@ -30,7 +30,14 @@
       "banco": "Outro",
       "agencia": "9999-9",
       "conta": "99999999-9",
-      "pix": "999999999999999999999999999"
+      "pix": "999999999999999999999999999",
+      "tempoContratoPadrao": 10,
+      "vencimentoPadrao": 10,
+      "reajusteAnual": 10,
+      "boletoAutomatico": true,
+      "descontoPagamentoAntecipado": true,
+      "valorDescontoAntecipado": 10,
+      "notificacoesPadrao": 10
     }
   ],
   "imoveis": [

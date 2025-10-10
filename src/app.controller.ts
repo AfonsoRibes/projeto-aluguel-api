@@ -16,6 +16,13 @@ interface User {
   agencia?: string;
   conta?: string;
   pix?: string;
+  tempoContratoPadrao?: number;
+  vencimentoPadrao?: number;
+  reajusteAnual?: number;
+  boletoAutomatico?: boolean;
+  descontoPagamentoAntecipado?: boolean;
+  valorDescontoAntecipado?: number;
+  notificacoesPadrao?: number;
   deleted: boolean;
 }
 
@@ -88,6 +95,13 @@ export class AppController {
         agencia: '1234',
         conta: '12345-6',
         pix: 'teste@teste.com',
+        tempoContratoPadrao: 12,
+        vencimentoPadrao: 5,
+        reajusteAnual: 0,
+        boletoAutomatico: false,
+        descontoPagamentoAntecipado: false,
+        valorDescontoAntecipado: 0,
+        notificacoesPadrao: 5,
         deleted: false
       }];
       this.saveData();
@@ -608,13 +622,20 @@ export class AppController {
       banco: user.banco || '',
       agencia: user.agencia || '',
       conta: user.conta || '',
-      pix: user.pix || ''
+      pix: user.pix || '',
+      tempoContratoPadrao: user.tempoContratoPadrao || 12,
+      vencimentoPadrao: user.vencimentoPadrao || 5,
+      reajusteAnual: user.reajusteAnual || 0,
+      boletoAutomatico: user.boletoAutomatico || false,
+      descontoPagamentoAntecipado: user.descontoPagamentoAntecipado || false,
+      valorDescontoAntecipado: user.valorDescontoAntecipado || 0,
+      notificacoesPadrao: user.notificacoesPadrao || 5
     };
   }
 
   @Post('usuario/atualizar-usuario')
   atualizarUsuario(@Body() body: any) {
-    const { id, nome, telefone, endereco, cep, rg, cpf, banco, agencia, conta, pix } = body;
+    const { id, nome, telefone, endereco, cep, rg, cpf, banco, agencia, conta, pix, tempoContratoPadrao, vencimentoPadrao, reajusteAnual, boletoAutomatico, descontoPagamentoAntecipado, valorDescontoAntecipado, notificacoesPadrao } = body;
     const user = this.users.find(u => u.id === id && !u.deleted);
     
     if (!user) {
@@ -631,7 +652,15 @@ export class AppController {
     user.agencia = agencia;
     user.conta = conta;
     user.pix = pix;
+    user.tempoContratoPadrao = tempoContratoPadrao;
+    user.vencimentoPadrao = vencimentoPadrao;
+    user.reajusteAnual = reajusteAnual;
+    user.boletoAutomatico = boletoAutomatico;
+    user.descontoPagamentoAntecipado = descontoPagamentoAntecipado;
+    user.valorDescontoAntecipado = valorDescontoAntecipado;
+    user.notificacoesPadrao = notificacoesPadrao;
     
+    this.saveData();
     return { message: 'Configurações atualizadas com sucesso!' };
   }
 
@@ -649,6 +678,7 @@ export class AppController {
     }
     
     user.password = this.hashPassword(novaSenha);
+    this.saveData();
     return { message: 'Senha atualizada com sucesso!' };
   }
 
@@ -692,6 +722,7 @@ export class AppController {
       }
     }
     
+    this.saveData();
     return { message: 'Conta excluída com sucesso!' };
   }
 }

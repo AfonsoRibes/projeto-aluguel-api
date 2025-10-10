@@ -204,9 +204,22 @@ export class AppController {
   buscarPagamentos() {
     return this.pagamentos.map(p => {
       const morador = this.moradores.find(m => m.id === p.moradorId);
+      const imovel = this.imoveis.find(i => i.id === morador?.imovelId);
+      const unidade = imovel?.Unidades.find(u => u.id === morador?.unidadeId);
+      
       return {
         ...p,
-        moradorNome: morador?.nome || 'Morador não encontrado'
+        moradorNome: morador?.nome || 'Morador não encontrado',
+        Moradore: {
+          nome: morador?.nome || 'Morador não encontrado',
+          ativo: true,
+          Unidade: {
+            Imovei: {
+              id: imovel?.id,
+              nomePredio: imovel?.name
+            }
+          }
+        }
       };
     });
   }

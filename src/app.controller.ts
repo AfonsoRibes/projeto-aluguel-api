@@ -294,18 +294,33 @@ export class AppController {
 
   @Put('imoveis/atualizar/unidade')
   atualizarUnidade(@Body() body: any) {
-    const { id, numeroUnidade, valorAluguel, instalacaoAgua, instalacaoLuz, comodos } = body;
+    const { unidadeId, moradorId, numeroUnidade, valorAluguel, instalacaoAgua, instalacaoLuz, comodos, nome, rg, cpf, telefone, email, inicioContrato, fimContrato, diaVencimento } = body;
     
     for (const imovel of this.imoveis) {
-      const unidade = imovel.Unidades.find(u => u.id === id);
+      const unidade = imovel.Unidades.find(u => u.id === unidadeId);
       if (unidade) {
         unidade.numeroUnidade = numeroUnidade;
         unidade.valorAluguel = valorAluguel;
         unidade.instalacaoAgua = instalacaoAgua;
         unidade.instalacaoLuz = instalacaoLuz;
-        unidade.comodos = comodos;
+        if (comodos) unidade.comodos = comodos;
         
-        return { message: 'Unidade atualizada com sucesso!' };
+        if (moradorId) {
+          const morador = this.moradores.find(m => m.id === moradorId);
+          if (morador) {
+            morador.nome = nome;
+            morador.rg = rg;
+            morador.cpf = cpf;
+            morador.telefone = telefone;
+            morador.email = email;
+            morador.dataInicioContrato = inicioContrato;
+            morador.dataFimContrato = fimContrato;
+            morador.diaVencimento = diaVencimento;
+          }
+        }
+        
+        this.saveData();
+        return { message: 'Dados atualizados com sucesso!' };
       }
     }
     

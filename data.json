@@ -21,7 +21,16 @@
       "email": "teste@gmail.com",
       "password": "$2b$10$dGVzdGUxMjM=",
       "name": "alysson eustaquio",
-      "deleted": false
+      "deleted": false,
+      "telefone": "",
+      "endereco": "Rua Paschoal Franceschini, Vila Santa Rita (Sousas) - Campinas - SP",
+      "cep": "13106508",
+      "rg": "123456789",
+      "cpf": "12345678900",
+      "banco": "Outro",
+      "agencia": "9999-9",
+      "conta": "99999999-9",
+      "pix": "999999999999999999999999999"
     }
   ],
   "imoveis": [
@@ -33,11 +42,9 @@
       "Unidades": [
         {
           "id": 1760031048243,
-          "numeroUnidade": 1,
           "valorAluguel": 800,
-          "instalacaoAgua": null,
-          "instalacaoLuz": null,
-          "comodos": 3,
+          "instalacaoAgua": "Instalação vazia",
+          "instalacaoLuz": "Instalação vazia",
           "ocupada": true,
           "imovelId": 1,
           "morador": {
@@ -72,14 +79,14 @@
     {
       "id": 1760032471858,
       "nome": "morador Teste",
-      "email": "teste@gmail.com",
-      "telefone": "99999999999",
-      "cpf": "12345678900",
-      "rg": "123456789",
+      "email": "",
+      "telefone": "(99) 99999-9999",
+      "cpf": "123.456.789-00",
+      "rg": "12.345.678-9",
       "dataNascimento": "1999-12-10",
       "dataInicioContrato": "2025-10-10",
       "dataFimContrato": "2026-10-10",
-      "diaVencimento": 10,
+      "diaVencimento": 11,
       "unidadeId": 1760031048243,
       "imovelId": 1
     }

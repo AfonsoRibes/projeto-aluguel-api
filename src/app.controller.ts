@@ -383,9 +383,11 @@ export class AppController {
 
   @Post('imoveis/add/unidade')
   addUnidade(@Body() body: any) {
+    console.log('ENDPOINT addUnidade CHAMADO');
+    console.log('Body recebido:', JSON.stringify(body, null, 2));
     const { imovelId, numeroUnidade, valorAluguel, ocupada, instalacaoAgua, instalacaoLuz, comodos, morador, dataNascimento, rg, cpf, dataInicioContrato, dataFimContrato, diaVencimento, telefone, email } = body;
     
-    const imovel = this.imoveis.find(i => i.id === imovelId);
+    const imovel = this.imoveis.find(i => i.id === parseInt(imovelId));
     if (!imovel) {
       throw new HttpException('Imóvel não encontrado', HttpStatus.NOT_FOUND);
     }
@@ -471,8 +473,8 @@ export class AppController {
     return unidades;
   }
 
-  @Post('imoveis/criar/contrato')
   @Post('imoveis/add/morador')
+  @Post('imoveis/criar/contrato')
   addMorador(@Body() body: any) {
     console.log('ENDPOINT CHAMADO - imoveis/criar/contrato');
     console.log('Body recebido:', body);

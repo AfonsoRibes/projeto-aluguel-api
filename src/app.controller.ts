@@ -416,14 +416,17 @@ export class AppController {
     const imovel = this.imoveis.find(i => i.id === imovelId);
     if (!imovel) return [];
     
-    return imovel.Unidades.map(unidade => {
+    const unidades = imovel.Unidades.map(unidade => {
       const morador = this.moradores.find(m => m.unidadeId === unidade.id);
       return {
         ...unidade,
-        morador,
-        ocupada: !!morador
+        morador: morador || unidade.morador,
+        ocupada: unidade.ocupada
       };
     });
+    
+    this.saveData();
+    return unidades;
   }
 
   @Post('imoveis/criar/contrato')
@@ -526,6 +529,21 @@ export class AppController {
     for (const imovel of this.imoveis) {
       const unidade = imovel.Unidades.find(u => u.id === unidadeId);
       if (unidade) {
+        const morador = this.moradores.find(m => m.unidadeId === unidadeId);
+        
+        const moradorFormatado = morador ? {
+          id: morador.id,
+          nome: morador.nome,
+          telefone: morador.telefone,
+          cpf: morador.cpf,
+          rg: morador.rg,
+          contrato: '',
+          inicioContrato: morador.dataInicioContrato,
+          fimContrato: morador.dataFimContrato,
+          diaVencimento: morador.diaVencimento,
+          ativo: true
+        } : null;
+        
         return {
           ...unidade,
           imovel: {
@@ -533,7 +551,7 @@ export class AppController {
             name: imovel.name,
             address: imovel.address
           },
-          morador: unidade.morador
+          Moradores: moradorFormatado ? [moradorFormatado] : []
         };
       }
     }
